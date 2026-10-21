@@ -1,0 +1,28 @@
+# Build artifacts and intermediate files
+*.apk
+!misaha.apk
+*.aab
+*.dex
+*.class
+*.idsig
+build/
+bin/
+gen/
+out/
+dist/
+temp/
+obj/
+
+# Keystores & credentials
+*.keystore
+!keystore/misaha-release.keystore
+*.jks
+*.p12
+
+# Logs and cache
+*.log
+.gradle/
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
