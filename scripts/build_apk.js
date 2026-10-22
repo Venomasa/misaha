@@ -391,7 +391,7 @@ if (!fs.existsSync(keystorePath)) {
 const finalApk = path.join(projectDir, 'misaha.apk');
 if (fs.existsSync(finalApk)) fs.unlinkSync(finalApk);
 
-run(`"${sdkTools}/apksigner.bat" sign --ks "${keystorePath}" --ks-pass pass:${keyPass} --ks-key-alias ${keyAlias} --key-pass pass:${keyPass} --out "${finalApk}" aligned.apk`);
+run(`"${sdkTools}/apksigner.bat" sign --v1-signing-enabled true --v2-signing-enabled true --v3-signing-enabled true --ks "${keystorePath}" --ks-pass pass:${keyPass} --ks-key-alias ${keyAlias} --key-pass pass:${keyPass} --out "${finalApk}" aligned.apk`);
 
 console.log('=== 8. VERIFY APK SIGNATURE ===');
 run(`"${sdkTools}/apksigner.bat" verify --verbose "${finalApk}"`);
