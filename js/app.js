@@ -54,8 +54,6 @@ function initSettingsFromStorage() {
     changeAppLanguage(AppSettings.lang);
 
     // Sync UI elements
-    const sUnit = document.getElementById('setPrimaryUnit');
-    if (sUnit) sUnit.value = AppSettings.primaryUnit;
     const sDec = document.getElementById('setDecimalPlaces');
     if (sDec) sDec.value = String(AppSettings.decimals);
     const sCorners = document.getElementById('setCornersVisible');
@@ -810,14 +808,12 @@ function applyCornerAngle() {
 // Settings Persistence
 function saveAppSettings() {
     AppSettings.lang = document.getElementById('setLanguage')?.value || 'ar';
-    AppSettings.primaryUnit = document.getElementById('setPrimaryUnit')?.value || 'feddan';
     AppSettings.decimals = parseInt(document.getElementById('setDecimalPlaces')?.value || '2', 10);
     AppSettings.showCorners = document.getElementById('setCornersVisible')?.checked ?? true;
     AppSettings.autoSelectInput = document.getElementById('setAutoSelectInput')?.checked ?? true;
 
     try {
         localStorage.setItem('misaha_lang', AppSettings.lang);
-        localStorage.setItem('misaha_primary_unit', AppSettings.primaryUnit);
         localStorage.setItem('misaha_decimals', AppSettings.decimals);
         localStorage.setItem('misaha_show_corners', AppSettings.showCorners);
         localStorage.setItem('misaha_auto_select', AppSettings.autoSelectInput);
