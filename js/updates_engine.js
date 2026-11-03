@@ -2,7 +2,7 @@
    MISAHA 1+ - EXTERNAL INTENT & SMART AUTO-UPDATE ENGINE
    ========================================================================== */
 
-const CURRENT_APP_VERSION = '1.0.0';
+const CURRENT_APP_VERSION = '1.5.0';
 
 function openExternalUrl(url) {
     if (window.AndroidBridge && typeof window.AndroidBridge.openExternalUrl === 'function') {

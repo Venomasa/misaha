@@ -179,6 +179,8 @@
             transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
             max-height: calc(100vh - 150px);
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
             width: 52px;
             box-sizing: border-box;
         }
@@ -301,6 +303,155 @@
             background: rgba(16, 185, 129, 0.15);
             color: #34d399;
             border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        /* CAD Mode Control Bar */
+        .cad-control-bar {
+            position: absolute;
+            top: 58px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.96);
+            border: 1.5px solid #10b981;
+            border-radius: 14px;
+            padding: 8px 12px;
+            box-shadow: 0 8px 26px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            max-width: 94%;
+            width: auto;
+            transition: all 0.25s ease;
+        }
+        .cad-control-bar.hidden {
+            display: none !important;
+        }
+        .cad-control-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .cad-input-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .cad-input-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--text-sub);
+        }
+        .cad-input-group input {
+            width: 65px;
+            background: #131c2e;
+            border: 1px solid var(--surface-border);
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 4px 6px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-align: center;
+        }
+        .cad-buttons-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .cad-action-btn {
+            background: #1e293b;
+            color: #cbd5e1;
+            border: 1px solid var(--surface-border);
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 0.74rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .cad-action-btn:hover {
+            background: #334155;
+            color: #ffffff;
+        }
+        .cad-action-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .cad-btn-primary {
+            background: var(--primary) !important;
+            color: #ffffff !important;
+            border: none !important;
+        }
+        .cad-btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            color: #ffffff !important;
+            border: none !important;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+        }
+        .cad-btn-danger {
+            background: rgba(239, 68, 68, 0.15) !important;
+            color: #fca5a5 !important;
+            border: 1px solid #ef4444 !important;
+        }
+        .cad-action-btn.active {
+            background: #10b981 !important;
+            color: #ffffff !important;
+            border-color: #34d399 !important;
+        }
+
+        /* CAD Coordinates Table */
+        .coords-table-wrap {
+            max-height: 280px;
+            overflow-y: auto;
+            border: 1px solid var(--surface-border);
+            border-radius: 10px;
+            background: #090e17;
+            margin-top: 4px;
+        }
+        .coords-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.74rem;
+            text-align: center;
+        }
+        .coords-table th {
+            background: #131c2e;
+            color: #94a3b8;
+            padding: 6px 4px;
+            position: sticky;
+            top: 0;
+            font-weight: 800;
+            border-bottom: 1px solid var(--surface-border);
+        }
+        .coords-table td {
+            padding: 5px 3px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .coords-inp {
+            width: 58px;
+            background: #131c2e;
+            border: 1px solid var(--surface-border);
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 3px 4px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-align: center;
+        }
+        .coords-btn-del {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            border-radius: 6px;
+            padding: 2px 6px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            cursor: pointer;
         }
 
         .tool-sep {
@@ -1365,3 +1516,58 @@
 .about-ver { display: inline-block; background: rgba(16, 185, 129, 0.18); border: 1px solid #10b981; color: #10b981; padding: 3px 12px; border-radius: 20px; font-weight: 800; font-size: 0.75rem; margin-top: 4px; }
 .btn-dialog-cancel { background: #1e293b; color: var(--text-sub); border: 1px solid var(--surface-border); border-radius: 10px; padding: 10px 18px; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
 .btn-dialog-cancel:hover { background: #334155; color: #ffffff; }
+
+/* Responsive Media Queries for Various Mobile Types */
+@media (max-height: 520px) {
+    .side-toolbar {
+        top: 48px;
+        max-height: calc(100vh - 60px);
+    }
+    .cad-control-bar {
+        top: 46px;
+        padding: 5px 8px;
+        gap: 4px;
+    }
+    .zoom-controls {
+        bottom: 58px;
+        left: 8px;
+    }
+    .bottom-action-bar {
+        bottom: 8px;
+    }
+    .btn-measure-main {
+        height: 42px;
+        font-size: 0.82rem;
+    }
+}
+
+@media (max-width: 340px) {
+    .status-pill {
+        padding: 5px 8px;
+        font-size: 0.68rem;
+    }
+    .cad-control-bar {
+        padding: 5px 6px;
+        max-width: 98%;
+    }
+    .cad-input-group input {
+        width: 50px;
+        font-size: 0.74rem;
+        padding: 3px 4px;
+    }
+    .cad-action-btn {
+        padding: 3px 6px;
+        font-size: 0.7rem;
+    }
+    .single-dialog-card {
+        padding: 12px;
+    }
+    .coords-table {
+        font-size: 0.68rem;
+    }
+    .coords-inp {
+        width: 48px;
+        font-size: 0.7rem;
+        padding: 2px 3px;
+    }
+}

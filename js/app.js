@@ -150,8 +150,12 @@ function displayResultsSheet(areaM2, perimeterM) {
     // Sqm & Secondary Units
     const dec = AppSettings.decimals ?? 2;
     const roundedArea = dec === 0 ? Math.round(areaM2) : areaM2.toFixed(dec);
-    setSafeText('resSqm', formatNum(roundedArea, dec));
-    setSafeText('heroSqmVal', formatNum(roundedArea, dec));
+    const elResSqm = document.getElementById('resSqm');
+    if (elResSqm) {
+        elResSqm.textContent = formatNum(roundedArea, dec);
+    } else {
+        setSafeText('heroSqmVal', formatNum(roundedArea, dec));
+    }
     setSafeText('resQasabaSq', formatNum(areaM2 / QASABA_SQUARE, dec));
     setSafeText('resTotalQirat', formatNum(areaM2 / QIRAT_M2, dec));
     setSafeText('resTotalSahm', formatNum(Math.round(areaM2 / SAHM_M2)));
@@ -235,29 +239,57 @@ function renderPlayground() {
     const poly = document.getElementById('landPolygon');
     const edgesLayer = document.getElementById('edgesLayer');
     const verticesLayer = document.getElementById('verticesLayer');
+    const previewLayer = document.getElementById('cadPreviewLayer');
     const pts = Playground.points;
-    if (pts.length < 3) return;
+
+    if (!pts || pts.length === 0) {
+        if (poly) poly.setAttribute('points', '');
+        if (edgesLayer) edgesLayer.innerHTML = '';
+        if (verticesLayer) verticesLayer.innerHTML = '';
+        if (previewLayer) previewLayer.innerHTML = '';
+        return;
+    }
 
     const isEn = (AppSettings.lang === 'en');
     const uM = isEn ? 'm' : 'م';
     const n = pts.length;
+    const isCadDrawing = (Playground.activeTool === 'cad');
 
     // Convert points to screen coordinates
     const screenPts = pts.map(p => worldToScreen(p.x, p.y));
 
-    // Polygon
-    const polyStr = screenPts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
-    if (poly) poly.setAttribute('points', polyStr);
+    // Polygon / Polyline points
+    if (n >= 3 && !isCadDrawing) {
+        const polyStr = screenPts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+        if (poly) {
+            poly.setAttribute('points', polyStr);
+            poly.style.display = 'block';
+        }
+    } else {
+        if (poly) {
+            poly.setAttribute('points', '');
+            poly.style.display = 'none';
+        }
+    }
 
     let edgesHtml = '';
 
-    // 1. Chords & Internal Edges
-    if (Playground.hasDiagonal && Playground.chords && Playground.chords.length > 0) {
+    // Draw open polyline segments if in CAD drawing mode or n < 3
+    if (isCadDrawing || n < 3) {
+        for (let i = 0; i < n - 1; i++) {
+            const pA = screenPts[i];
+            const pB = screenPts[i + 1];
+            edgesHtml += `<line x1="${pA.x}" y1="${pA.y}" x2="${pB.x}" y2="${pB.y}" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" />`;
+        }
+    }
+
+    // 1. Chords & Internal Edges (if closed polygon)
+    if (!isCadDrawing && n >= 3 && Playground.hasDiagonal && Playground.chords && Playground.chords.length > 0) {
         Playground.chords.forEach((c, cIdx) => {
             if (c.from < n && c.to < n && c.from !== c.to) {
                 const s = screenPts[c.from];
                 const e = screenPts[c.to];
-                const cLen = Math.round(Math.hypot(pts[c.to].x - pts[c.from].x, pts[c.to].y - pts[c.from].y));
+                const cLen = Math.round(Math.hypot(pts[c.to].x - pts[c.from].x, pts[c.to].y - pts[c.from].y) * 10) / 10;
                 const chordLabel = `${getChordName(c.from, c.to)}: ${cLen}${uM}`;
                 const t = (Playground.chords.length > 1) ? (cIdx % 2 === 0 ? 0.42 : 0.58) : 0.5;
                 const midX = s.x + (e.x - s.x) * t;
@@ -276,13 +308,14 @@ function renderPlayground() {
     }
 
     // 2. Outer Edges
-    for (let i = 0; i < n; i++) {
+    const numEdges = (isCadDrawing || n < 3) ? (n - 1) : n;
+    for (let i = 0; i < numEdges; i++) {
         const nextIdx = (i + 1) % n;
         const pA = screenPts[i];
         const pB = screenPts[nextIdx];
         const midX = (pA.x + pB.x) / 2;
         const midY = (pA.y + pB.y) / 2;
-        const distM = Math.round(Math.hypot(pts[nextIdx].x - pts[i].x, pts[nextIdx].y - pts[i].y));
+        const distM = Math.round(Math.hypot(pts[nextIdx].x - pts[i].x, pts[nextIdx].y - pts[i].y) * 10) / 10;
         const edgeLabel = `${getEdgeName(i, nextIdx)}: ${distM}${uM}`;
         const tw = edgeLabel.length * 7 + 24;
 
@@ -296,20 +329,65 @@ function renderPlayground() {
 
     if (edgesLayer) edgesLayer.innerHTML = edgesHtml;
 
-    // 3. Vertices (Corners)
+    // 3. Corner Vertices
     let verticesHtml = '';
     screenPts.forEach((p, idx) => {
         const cName = AppSettings.showCorners ? getCornerName(idx) : '';
+        const isStartInCad = (isCadDrawing && idx === 0 && n >= 3);
         verticesHtml += `
             <g data-corner="${idx}" style="cursor:${Playground.moveEnabled ? 'grab' : 'pointer'};">
-                <circle cx="${p.x}" cy="${p.y}" r="17" fill="rgba(16, 185, 129, 0.2)" />
-                <circle cx="${p.x}" cy="${p.y}" r="11" fill="#ffffff" stroke="#10b981" stroke-width="3" />
+                <circle cx="${p.x}" cy="${p.y}" r="${isStartInCad ? 20 : 17}" fill="${isStartInCad ? 'rgba(56, 189, 248, 0.35)' : 'rgba(16, 185, 129, 0.2)'}" />
+                <circle cx="${p.x}" cy="${p.y}" r="11" fill="#ffffff" stroke="${isStartInCad ? '#38bdf8' : '#10b981'}" stroke-width="3" />
                 <text x="${p.x}" y="${p.y + 4}" font-size="11" font-weight="900" text-anchor="middle" fill="#064e3b" pointer-events="none">${cName}</text>
             </g>
         `;
     });
 
     if (verticesLayer) verticesLayer.innerHTML = verticesHtml;
+
+    if (isCadDrawing && Playground.cadLiveCursor) {
+        renderCadRubberPreview();
+    }
+}
+
+function renderCadRubberPreview() {
+    const previewLayer = document.getElementById('cadPreviewLayer');
+    if (!previewLayer) return;
+    const pts = Playground.points;
+    if (pts.length === 0 || !Playground.cadLiveCursor) {
+        previewLayer.innerHTML = '';
+        return;
+    }
+    const lastP = pts[pts.length - 1];
+    const pScreenLast = worldToScreen(lastP.x, lastP.y);
+    const pScreenCur = worldToScreen(Playground.cadLiveCursor.wx, Playground.cadLiveCursor.wy);
+    const d = Playground.cadLiveCursor.dist;
+    const theta = Playground.cadLiveCursor.angle;
+    const isSnap = Playground.cadLiveCursor.isSnapToStart;
+
+    const midX = (pScreenLast.x + pScreenCur.x) / 2;
+    const midY = (pScreenLast.y + pScreenCur.y) / 2;
+
+    let html = `
+        <line x1="${pScreenLast.x}" y1="${pScreenLast.y}" x2="${pScreenCur.x}" y2="${pScreenCur.y}" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="5,4" pointer-events="none" />
+        <g pointer-events="none">
+            <rect x="${midX - 45}" y="${midY - 12}" width="90" height="22" rx="6" fill="rgba(15, 23, 42, 0.9)" stroke="#38bdf8" stroke-width="1.5" />
+            <text x="${midX}" y="${midY + 3.5}" fill="#38bdf8" font-size="10.5" font-weight="900" text-anchor="middle">${d}م | ${theta}°</text>
+        </g>
+    `;
+
+    if (isSnap && pts.length >= 3) {
+        const p0s = worldToScreen(pts[0].x, pts[0].y);
+        html += `
+            <g pointer-events="none">
+                <rect x="${p0s.x - 14}" y="${p0s.y - 14}" width="28" height="28" fill="none" stroke="#22c55e" stroke-width="3" rx="4" />
+                <rect x="${p0s.x - 55}" y="${p0s.y - 36}" width="110" height="20" rx="6" fill="#15803d" stroke="#22c55e" stroke-width="1" />
+                <text x="${p0s.x}" y="${p0s.y - 22}" fill="#ffffff" font-size="10" font-weight="900" text-anchor="middle">انقر للإغلاق (Close)</text>
+            </g>
+        `;
+    }
+
+    previewLayer.innerHTML = html;
 }
 
 // Pointer & Touch Events on Playground Canvas
@@ -367,6 +445,58 @@ function onPlaygroundPointerDown(e) {
     const sx = e.clientX - rect.left;
     const sy = e.clientY - rect.top;
 
+    // Middle Mouse Button (Wheel click) pans canvas in any mode
+    if (e.button === 1) {
+        Playground.isPanning = true;
+        Playground.panStartX = sx;
+        Playground.panStartY = sy;
+        Playground.initialPanX = Playground.panX;
+        Playground.initialPanY = Playground.panY;
+        return;
+    }
+
+    // CAD Mode Click Handler
+    if (Playground.activeTool === 'cad') {
+        if (Playground.cadLiveCursor && Playground.cadLiveCursor.isSnapToStart && Playground.points.length >= 3) {
+            cadClosePolygon();
+            return;
+        }
+        const targetCorner = e.target.closest('[data-corner]');
+        if (targetCorner) {
+            const cIdx = parseInt(targetCorner.getAttribute('data-corner'), 10);
+            if (cIdx === 0 && Playground.points.length >= 3) {
+                cadClosePolygon();
+                return;
+            }
+        }
+
+        let world = screenToWorld(sx, sy);
+        let wx = Math.round(world.x * 10) / 10;
+        let wy = Math.round(world.y * 10) / 10;
+
+        if (Playground.orthoEnabled && Playground.points.length > 0) {
+            const lastP = Playground.points[Playground.points.length - 1];
+            if (Math.abs(wx - lastP.x) >= Math.abs(wy - lastP.y)) {
+                wy = lastP.y;
+            } else {
+                wx = lastP.x;
+            }
+        }
+
+        Playground.points.push({ x: wx, y: wy });
+
+        const closeBtn = document.getElementById('cadCloseBtn');
+        if (closeBtn) closeBtn.disabled = (Playground.points.length < 3);
+        const statusText = document.getElementById('playgroundStatusText');
+        if (statusText) statusText.textContent = (AppSettings.lang === 'en') ?
+            'CAD Mode: Click next point, or click start point to close' :
+            'وضع أوتوكاد: انقر لوضع النقطة التالية، أو انقر على نقطة البداية للإغلاق';
+
+        renderPlayground();
+        updateCalculationsAndUI();
+        return;
+    }
+
     // Corner interaction
     const targetCorner = e.target.closest('[data-corner]');
     if (targetCorner) {
@@ -408,10 +538,69 @@ function onPlaygroundPointerMove(e) {
     const sx = e.clientX - rect.left;
     const sy = e.clientY - rect.top;
 
+    // CAD Mode Move Handler
+    if (Playground.activeTool === 'cad') {
+        if (Playground.points.length > 0) {
+            let world = screenToWorld(sx, sy);
+            let wx = Math.round(world.x * 10) / 10;
+            let wy = Math.round(world.y * 10) / 10;
+            const lastP = Playground.points[Playground.points.length - 1];
+
+            if (Playground.orthoEnabled) {
+                const dx = Math.abs(wx - lastP.x);
+                const dy = Math.abs(wy - lastP.y);
+                if (dx >= dy) {
+                    wy = lastP.y;
+                } else {
+                    wx = lastP.x;
+                }
+            }
+
+            let isSnap = false;
+            if (Playground.points.length >= 3) {
+                const p0s = worldToScreen(Playground.points[0].x, Playground.points[0].y);
+                if (Math.hypot(sx - p0s.x, sy - p0s.y) < 28) {
+                    wx = Playground.points[0].x;
+                    wy = Playground.points[0].y;
+                    isSnap = true;
+                }
+            }
+
+            const dist = Math.round(Math.hypot(wx - lastP.x, wy - lastP.y) * 10) / 10;
+            let angleDeg = Math.round(Math.atan2(wy - lastP.y, wx - lastP.x) * (180 / Math.PI));
+            if (angleDeg < 0) angleDeg += 360;
+
+            Playground.cadLiveCursor = {
+                wx, wy, dist, angle: angleDeg, isSnapToStart: isSnap
+            };
+
+            const lInput = document.getElementById('cadLengthInput');
+            const aInput = document.getElementById('cadAngleInput');
+            if (lInput && !lInput.matches(':focus')) lInput.placeholder = dist;
+            if (aInput && !aInput.matches(':focus')) aInput.placeholder = angleDeg;
+
+            renderCadRubberPreview();
+        }
+        return;
+    }
+
     if (Playground.dragCornerIndex !== null) {
         const world = screenToWorld(sx, sy);
-        Playground.points[Playground.dragCornerIndex].x = Math.round(world.x);
-        Playground.points[Playground.dragCornerIndex].y = Math.round(world.y);
+        let newX = Math.round(world.x);
+        let newY = Math.round(world.y);
+
+        if (Playground.orthoEnabled && Playground.points.length > 1) {
+            const idx = Playground.dragCornerIndex;
+            const prevP = Playground.points[(idx - 1 + Playground.points.length) % Playground.points.length];
+            if (Math.abs(newX - prevP.x) >= Math.abs(newY - prevP.y)) {
+                newY = prevP.y;
+            } else {
+                newX = prevP.x;
+            }
+        }
+
+        Playground.points[Playground.dragCornerIndex].x = newX;
+        Playground.points[Playground.dragCornerIndex].y = newY;
 
         if (!playgroundMoveRaf) {
             playgroundMoveRaf = requestAnimationFrame(() => {
@@ -518,14 +707,142 @@ function togglePlaygroundMove() {
 function selectPlaygroundTool(tool) {
     Playground.activeTool = tool;
     document.querySelectorAll('.tool-btn').forEach(b => {
-        if (b.id === 'toolAdd' || b.id === 'toolDel') b.classList.remove('active');
+        if (b.id === 'toolAdd' || b.id === 'toolDel' || b.id === 'toolCad') b.classList.remove('active');
     });
 
-    if (tool === 'add') {
-        document.getElementById('toolAdd')?.classList.add('active');
-    } else if (tool === 'del') {
-        document.getElementById('toolDel')?.classList.add('active');
+    const cadBar = document.getElementById('cadControlBar');
+    const previewLayer = document.getElementById('cadPreviewLayer');
+    const statusText = document.getElementById('playgroundStatusText');
+    const isEn = (AppSettings.lang === 'en');
+
+    if (tool === 'cad') {
+        document.getElementById('toolCad')?.classList.add('active');
+        if (cadBar) cadBar.classList.remove('hidden');
+        const closeBtn = document.getElementById('cadCloseBtn');
+        if (closeBtn) closeBtn.disabled = (Playground.points.length < 3);
+        if (statusText) statusText.textContent = Playground.points.length === 0 ?
+            (isEn ? 'CAD Mode: Click to place first point (A)' : 'وضع أوتوكاد: انقر لوضع النقطة الأولى (أ)') :
+            (isEn ? 'CAD Mode: Click next point, or click start point to close' : 'وضع أوتوكاد: انقر لوضع النقطة التالية، أو انقر على نقطة البداية للإغلاق');
+    } else {
+        if (cadBar) cadBar.classList.add('hidden');
+        if (previewLayer) previewLayer.innerHTML = '';
+        Playground.cadLiveCursor = null;
+
+        if (tool === 'add') {
+            document.getElementById('toolAdd')?.classList.add('active');
+        } else if (tool === 'del') {
+            document.getElementById('toolDel')?.classList.add('active');
+        }
     }
+    renderPlayground();
+}
+
+function togglePlaygroundOrtho() {
+    Playground.orthoEnabled = !Playground.orthoEnabled;
+    const btn = document.getElementById('toolOrtho');
+    const cadBtn = document.getElementById('cadOrthoBtn');
+    const cadText = document.getElementById('cadOrthoText');
+    const isEn = (AppSettings.lang === 'en');
+
+    if (btn) btn.classList.toggle('active', Playground.orthoEnabled);
+    if (cadBtn) cadBtn.classList.toggle('active', Playground.orthoEnabled);
+    if (cadText) cadText.textContent = Playground.orthoEnabled ? (isEn ? 'Ortho: ON' : 'تعامد: تشغيل') : (isEn ? 'Ortho: OFF' : 'تعامد: إيقاف');
+
+    showToast(Playground.orthoEnabled ? (isEn ? 'Orthogonal 90° Mode enabled (Ortho ON)' : 'تم تفعيل نمط التعامد 90° (Ortho ON)') : (isEn ? 'Orthogonal Mode disabled' : 'تم إيقاف نمط التعامد'), 'info');
+    renderPlayground();
+}
+
+function cadAddPointFromInput() {
+    const lenInput = document.getElementById('cadLengthInput');
+    const angleInput = document.getElementById('cadAngleInput');
+    const val = parseFloat(lenInput?.value);
+    const isEn = (AppSettings.lang === 'en');
+
+    if (isNaN(val) || val <= 0) {
+        showToast(isEn ? 'Please enter a valid length in meters' : 'يرجى إدخال طول صحيح بالمتر', 'error');
+        lenInput?.focus();
+        return;
+    }
+
+    let angleDeg = parseFloat(angleInput?.value);
+    if (isNaN(angleDeg)) angleDeg = 0;
+    const angleRad = (angleDeg * Math.PI) / 180;
+    const pts = Playground.points;
+
+    if (pts.length === 0) {
+        pts.push({ x: 0, y: 0 });
+        const nextX = Math.round(Math.cos(angleRad) * val * 10) / 10;
+        const nextY = Math.round(Math.sin(angleRad) * val * 10) / 10;
+        pts.push({ x: nextX, y: nextY });
+    } else {
+        const lastP = pts[pts.length - 1];
+        const nextX = Math.round((lastP.x + Math.cos(angleRad) * val) * 10) / 10;
+        const nextY = Math.round((lastP.y + Math.sin(angleRad) * val) * 10) / 10;
+        pts.push({ x: nextX, y: nextY });
+    }
+
+    lenInput.value = '';
+    const closeBtn = document.getElementById('cadCloseBtn');
+    if (closeBtn) closeBtn.disabled = (pts.length < 3);
+    const statusText = document.getElementById('playgroundStatusText');
+    if (statusText) statusText.textContent = isEn ?
+        'CAD Mode: Click next point, or click start point to close' :
+        'وضع أوتوكاد: انقر لوضع النقطة التالية، أو انقر على نقطة البداية للإغلاق';
+
+    renderPlayground();
+    updateCalculationsAndUI();
+    fitPlaygroundView();
+}
+
+function cadUndoPoint() {
+    const pts = Playground.points;
+    if (pts.length === 0) return;
+    pts.pop();
+    const closeBtn = document.getElementById('cadCloseBtn');
+    if (closeBtn) closeBtn.disabled = (pts.length < 3);
+    const statusText = document.getElementById('playgroundStatusText');
+    const isEn = (AppSettings.lang === 'en');
+    if (statusText) statusText.textContent = pts.length === 0 ?
+        (isEn ? 'CAD Mode: Click to place first point (A)' : 'وضع أوتوكاد: انقر لوضع النقطة الأولى (أ)') :
+        (isEn ? 'CAD Mode: Click next point, or click start point to close' : 'وضع أوتوكاد: انقر لوضع النقطة التالية، أو انقر على نقطة البداية للإغلاق');
+
+    renderPlayground();
+    updateCalculationsAndUI();
+}
+
+function cadClearPoints() {
+    Playground.points = [];
+    Playground.chords = [];
+    const closeBtn = document.getElementById('cadCloseBtn');
+    if (closeBtn) closeBtn.disabled = true;
+    const statusText = document.getElementById('playgroundStatusText');
+    const isEn = (AppSettings.lang === 'en');
+    if (statusText) statusText.textContent = isEn ? 'CAD Mode: Click to place first point (A)' : 'وضع أوتوكاد: انقر لوضع النقطة الأولى (أ)';
+
+    renderPlayground();
+    updateCalculationsAndUI();
+    showToast(isEn ? 'Canvas cleared. Click to place first point' : 'تم مسح اللوحة. انقر لوضع النقطة الأولى', 'info');
+}
+
+function cadClosePolygon() {
+    const pts = Playground.points;
+    const isEn = (AppSettings.lang === 'en');
+    if (pts.length < 3) {
+        showToast(isEn ? 'A polygon requires at least 3 points' : 'المضلع يتطلب 3 نقاط على الأقل', 'warning');
+        return;
+    }
+    Playground.hasDiagonal = true;
+    if (pts.length === 4 && (!Playground.chords || Playground.chords.length === 0)) {
+        Playground.chords = [{ from: 0, to: 2 }];
+    }
+    const previewLayer = document.getElementById('cadPreviewLayer');
+    if (previewLayer) previewLayer.innerHTML = '';
+    Playground.cadLiveCursor = null;
+
+    selectPlaygroundTool('move');
+    fitPlaygroundView();
+    updateCalculationsAndUI();
+    showToast(isEn ? 'Polygon closed and area calculated successfully' : 'تم إغلاق المضلع وحساب المساحة بنجاح', 'success');
 }
 
 function togglePlaygroundGrid() {
@@ -568,19 +885,22 @@ function toggleSideToolbar() {
 // Single Edge & Chord Modals
 function openSingleEdgeModal(target, currentLen) {
     activeEdgeEditTarget = target;
-    const modal = document.getElementById('singleEdgeModal');
+    const modal = document.getElementById('singleEdgeDialog') || document.getElementById('singleEdgeModal');
     const titleEl = document.getElementById('singleEdgeTitle');
-    const valInput = document.getElementById('singleEdgeVal');
+    const valInput = document.getElementById('singleEdgeInput') || document.getElementById('singleEdgeVal');
+    const modeContainer = document.getElementById('edgeModeContainer');
 
     if (valInput) valInput.value = currentLen;
 
     if (typeof target === 'string' && target.startsWith('chord_')) {
+        if (modeContainer) modeContainer.classList.add('hidden');
         const cIdx = parseInt(target.replace('chord_', ''), 10);
         const c = Playground.chords[cIdx];
         if (c && titleEl) {
             titleEl.textContent = `${getChordName(c.from, c.to)}`;
         }
     } else {
+        if (modeContainer) modeContainer.classList.remove('hidden');
         const i = parseInt(target, 10);
         const next = (i + 1) % Playground.points.length;
         if (titleEl) {
@@ -588,21 +908,30 @@ function openSingleEdgeModal(target, currentLen) {
         }
     }
 
-    if (modal) modal.classList.add('active');
+    if (modal) {
+        modal.classList.add('active');
+        modal.classList.remove('hidden');
+    }
     setTimeout(() => valInput?.select(), 100);
 }
 
 function closeSingleEdgeDialog() {
-    const modal = document.getElementById('singleEdgeModal');
-    if (modal) modal.classList.remove('active');
+    const modal = document.getElementById('singleEdgeDialog') || document.getElementById('singleEdgeModal');
+    if (modal) {
+        modal.classList.remove('active');
+        modal.classList.add('hidden');
+    }
     activeEdgeEditTarget = null;
 }
 
 function saveSingleEdgeLength() {
-    const valInput = document.getElementById('singleEdgeVal');
+    const valInput = document.getElementById('singleEdgeInput') || document.getElementById('singleEdgeVal');
+    const modeSelect = document.getElementById('edgeEditMode');
+    const mode = modeSelect ? modeSelect.value : 'chain';
     const newLen = parseFloat(valInput?.value);
     if (isNaN(newLen) || newLen <= 0) {
         showToast(t('toastInputError'), 'error');
+        valInput?.focus();
         return;
     }
 
@@ -613,12 +942,12 @@ function saveSingleEdgeLength() {
         const cIdx = parseInt(activeEdgeEditTarget.replace('chord_', ''), 10);
         const c = Playground.chords[cIdx];
         if (c) {
-            adjustEdgeLength(pts, c.from, c.to, newLen);
+            adjustEdgeLength(pts, c.from, c.to, newLen, mode);
         }
     } else if (activeEdgeEditTarget !== null) {
         const i = parseInt(activeEdgeEditTarget, 10);
         const next = (i + 1) % n;
-        adjustEdgeLength(pts, i, next, newLen);
+        adjustEdgeLength(pts, i, next, newLen, mode);
     }
 
     closeSingleEdgeDialog();
@@ -626,18 +955,75 @@ function saveSingleEdgeLength() {
     updateCalculationsAndUI();
 }
 
-function adjustEdgeLength(pts, i, j, newLen) {
-    const pA = pts[i];
-    const pB = pts[j];
-    const dx = pB.x - pA.x;
-    const dy = pB.y - pA.y;
-    const currentLen = Math.hypot(dx, dy);
-    if (currentLen === 0) return;
+// CAD Coordinates Inspector Functions
+function openCoordsModal() {
+    const modal = document.getElementById('coordsModal');
+    if (modal) modal.classList.remove('hidden');
+    populateCoordsTable();
+}
 
-    const ratio = newLen / currentLen;
-    // Move pB along line from pA
-    pB.x = Math.round(pA.x + dx * ratio);
-    pB.y = Math.round(pA.y + dy * ratio);
+function closeCoordsModal() {
+    const modal = document.getElementById('coordsModal');
+    if (modal) modal.classList.add('hidden');
+}
+
+function handleCoordsModalClick(e) {
+    if (e.target.id === 'coordsModal') closeCoordsModal();
+}
+
+function populateCoordsTable() {
+    const tbody = document.getElementById('coordsTableBody');
+    if (!tbody) return;
+    const pts = Playground.points;
+    const n = pts.length;
+    let html = '';
+    pts.forEach((p, idx) => {
+        const nextIdx = (idx + 1) % n;
+        const nextP = pts[nextIdx];
+        const dist = n > 1 ? Math.round(Math.hypot(nextP.x - p.x, nextP.y - p.y) * 10) / 10 : 0;
+        const angle = n >= 3 ? getCornerAngle(idx) : 0;
+        const name = getCornerName(idx);
+        html += `
+            <tr>
+                <td style="font-weight:900; color:var(--primary); font-size:0.85rem;">${name}</td>
+                <td><input type="number" class="coords-inp" step="any" value="${p.x}" onchange="updatePointCoord(${idx}, 'x', this.value)"></td>
+                <td><input type="number" class="coords-inp" step="any" value="${p.y}" onchange="updatePointCoord(${idx}, 'y', this.value)"></td>
+                <td style="color:#a7f3d0; font-weight:800;">${dist}</td>
+                <td style="color:#fde047; font-weight:700;">${angle}°</td>
+                <td>
+                    ${n > 3 ? `<button class="coords-btn-del" onclick="deleteCorner(${idx}); populateCoordsTable();" title="حذف">&times;</button>` : ''}
+                </td>
+            </tr>
+        `;
+    });
+    tbody.innerHTML = html;
+}
+
+function updatePointCoord(idx, axis, val) {
+    const num = parseFloat(val);
+    if (isNaN(num)) return;
+    if (Playground.points[idx]) {
+        Playground.points[idx][axis] = Math.round(num * 100) / 100;
+        renderPlayground();
+        updateCalculationsAndUI();
+        populateCoordsTable();
+    }
+}
+
+function addPointFromCoordsModal() {
+    const pts = Playground.points;
+    const n = pts.length;
+    let newX = 50, newY = 50;
+    if (n > 0) {
+        newX = pts[n - 1].x + 20;
+        newY = pts[n - 1].y;
+    }
+    pts.push({ x: newX, y: newY });
+    renderPlayground();
+    updateCalculationsAndUI();
+    populateCoordsTable();
+    const isEn = (AppSettings.lang === 'en');
+    showToast(isEn ? 'Corner added' : 'تمت إضافة الركن بنجاح', 'success');
 }
 
 // Chords & Internal Diagonals Manager

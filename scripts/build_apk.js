@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const projectDir = 'D:/Coding/arabic-land-measurer';
+const projectDir = path.resolve(__dirname, '..');
 const buildDir = path.join(projectDir, 'android-build');
 const javaHome = 'C:/Program Files/Eclipse Adoptium/jdk-17.0.20.101-hotspot';
 const jdkBin = path.join(javaHome, 'bin');
@@ -45,8 +45,8 @@ dirs.forEach(d => fs.mkdirSync(d, { recursive: true }));
 const manifest = `<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.venomasa.misaha"
-    android:versionCode="103"
-    android:versionName="1.0.0">
+    android:versionCode="150"
+    android:versionName="1.5.0">
 
     <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="34" />
     <uses-permission android:name="android.permission.INTERNET" />

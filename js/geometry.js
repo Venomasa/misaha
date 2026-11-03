@@ -22,7 +22,9 @@ const Playground = {
     ],
     hasDiagonal: true,
     moveEnabled: true,
-    activeTool: 'move', // 'move', 'add', 'del'
+    activeTool: 'move', // 'move', 'add', 'del', 'cad'
+    orthoEnabled: false,
+    cadLiveCursor: null,
     zoom: 1.0,
     panX: 0,
     panY: 0,
@@ -291,4 +293,48 @@ function setCornerAngle(i, targetDeg) {
 
     if (typeof renderPlayground === 'function') renderPlayground();
     if (typeof updateCalculationsAndUI === 'function') updateCalculationsAndUI();
+}
+
+
+// Chain Shift Edge Adjustment Algorithm
+function adjustEdgeLength(pts, i, next, newLen, mode = 'chain') {
+    const n = pts.length;
+    if (n < 2) return;
+    const pA = pts[i];
+    const pB = pts[next];
+    const dx = pB.x - pA.x;
+    const dy = pB.y - pA.y;
+    const curLen = Math.hypot(dx, dy);
+    if (curLen === 0) return;
+
+    const diff = newLen - curLen;
+    const ux = dx / curLen;
+    const uy = dy / curLen;
+
+    if (mode === 'single') {
+        pB.x = Math.round(pA.x + ux * newLen);
+        pB.y = Math.round(pA.y + uy * newLen);
+    } else if (mode === 'symmetric') {
+        const half = diff / 2;
+        pA.x = Math.round(pA.x - ux * half);
+        pA.y = Math.round(pA.y - uy * half);
+        pB.x = Math.round(pB.x + ux * half);
+        pB.y = Math.round(pB.y + uy * half);
+    } else {
+        // 'chain' mode: Chain Shift - preserves all downstream & previous side lengths!
+        const shiftX = Math.round(ux * diff);
+        const shiftY = Math.round(uy * diff);
+
+        if (next === 0) {
+            // Closing edge: adjust pA backwards from pB (vertex 0)
+            pA.x = Math.round(pB.x - ux * newLen);
+            pA.y = Math.round(pB.y - uy * newLen);
+        } else {
+            // Forward chain shift: shifts pB and all subsequent vertices
+            for (let k = next; k < n; k++) {
+                pts[k].x += shiftX;
+                pts[k].y += shiftY;
+            }
+        }
+    }
 }

@@ -319,6 +319,155 @@
             border-color: rgba(16, 185, 129, 0.4);
         }
 
+        /* CAD Mode Control Bar */
+        .cad-control-bar {
+            position: absolute;
+            top: 58px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.96);
+            border: 1.5px solid #10b981;
+            border-radius: 14px;
+            padding: 8px 12px;
+            box-shadow: 0 8px 26px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            max-width: 94%;
+            width: auto;
+            transition: all 0.25s ease;
+        }
+        .cad-control-bar.hidden {
+            display: none !important;
+        }
+        .cad-control-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .cad-input-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .cad-input-label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--text-sub);
+        }
+        .cad-input-group input {
+            width: 65px;
+            background: #131c2e;
+            border: 1px solid var(--surface-border);
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 4px 6px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-align: center;
+        }
+        .cad-buttons-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .cad-action-btn {
+            background: #1e293b;
+            color: #cbd5e1;
+            border: 1px solid var(--surface-border);
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 0.74rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .cad-action-btn:hover {
+            background: #334155;
+            color: #ffffff;
+        }
+        .cad-action-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .cad-btn-primary {
+            background: var(--primary) !important;
+            color: #ffffff !important;
+            border: none !important;
+        }
+        .cad-btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            color: #ffffff !important;
+            border: none !important;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+        }
+        .cad-btn-danger {
+            background: rgba(239, 68, 68, 0.15) !important;
+            color: #fca5a5 !important;
+            border: 1px solid #ef4444 !important;
+        }
+        .cad-action-btn.active {
+            background: #10b981 !important;
+            color: #ffffff !important;
+            border-color: #34d399 !important;
+        }
+
+        /* CAD Coordinates Table */
+        .coords-table-wrap {
+            max-height: 280px;
+            overflow-y: auto;
+            border: 1px solid var(--surface-border);
+            border-radius: 10px;
+            background: #090e17;
+            margin-top: 4px;
+        }
+        .coords-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.74rem;
+            text-align: center;
+        }
+        .coords-table th {
+            background: #131c2e;
+            color: #94a3b8;
+            padding: 6px 4px;
+            position: sticky;
+            top: 0;
+            font-weight: 800;
+            border-bottom: 1px solid var(--surface-border);
+        }
+        .coords-table td {
+            padding: 5px 3px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .coords-inp {
+            width: 58px;
+            background: #131c2e;
+            border: 1px solid var(--surface-border);
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 3px 4px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-align: center;
+        }
+        .coords-btn-del {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid #ef4444;
+            color: #fca5a5;
+            border-radius: 6px;
+            padding: 2px 6px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
         .tool-sep {
             width: 75%;
             height: 1px;
@@ -1382,6 +1531,61 @@
 .btn-dialog-cancel { background: #1e293b; color: var(--text-sub); border: 1px solid var(--surface-border); border-radius: 10px; padding: 10px 18px; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
 .btn-dialog-cancel:hover { background: #334155; color: #ffffff; }
 
+/* Responsive Media Queries for Various Mobile Types */
+@media (max-height: 520px) {
+    .side-toolbar {
+        top: 48px;
+        max-height: calc(100vh - 60px);
+    }
+    .cad-control-bar {
+        top: 46px;
+        padding: 5px 8px;
+        gap: 4px;
+    }
+    .zoom-controls {
+        bottom: 58px;
+        left: 8px;
+    }
+    .bottom-action-bar {
+        bottom: 8px;
+    }
+    .btn-measure-main {
+        height: 42px;
+        font-size: 0.82rem;
+    }
+}
+
+@media (max-width: 340px) {
+    .status-pill {
+        padding: 5px 8px;
+        font-size: 0.68rem;
+    }
+    .cad-control-bar {
+        padding: 5px 6px;
+        max-width: 98%;
+    }
+    .cad-input-group input {
+        width: 50px;
+        font-size: 0.74rem;
+        padding: 3px 4px;
+    }
+    .cad-action-btn {
+        padding: 3px 6px;
+        font-size: 0.7rem;
+    }
+    .single-dialog-card {
+        padding: 12px;
+    }
+    .coords-table {
+        font-size: 0.68rem;
+    }
+    .coords-inp {
+        width: 48px;
+        font-size: 0.7rem;
+        padding: 2px 3px;
+    }
+}
+
     </style>
 </head>
 <body>
@@ -1407,6 +1611,9 @@
                     <polygon id="landPolygon" fill="rgba(16, 185, 129, 0.22)" stroke="#10b981" stroke-width="3.5" stroke-linejoin="round" />
 
                     <line id="diagonalLine" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="6,4" />
+
+                    <!-- CAD Dynamic Rubber-band & Preview Layer -->
+                    <g id="cadPreviewLayer"></g>
 
                     <!-- Dynamic Edge labels & vertices injected here -->
 
@@ -1438,6 +1645,29 @@
 
                 </div>
 
+            </div>
+
+            <!-- CAD Dynamic Input & Control Bar (شريط تحكم ورسم أوتوكاد) -->
+            <div class="cad-control-bar hidden" id="cadControlBar">
+                <div class="cad-control-row">
+                    <div class="cad-input-group">
+                        <span class="cad-input-label" data-i18n="cadInputLen">طول (م):</span>
+                        <input type="number" id="cadLengthInput" placeholder="20" step="any" inputmode="decimal" onkeydown="if(event.key==='Enter') cadAddPointFromInput()">
+                    </div>
+                    <div class="cad-input-group" id="cadAngleGroup">
+                        <span class="cad-input-label" data-i18n="cadInputAngle">زاوية (°):</span>
+                        <input type="number" id="cadAngleInput" placeholder="0" step="any" inputmode="decimal" onkeydown="if(event.key==='Enter') cadAddPointFromInput()">
+                    </div>
+                    <button class="cad-action-btn cad-btn-primary" onclick="cadAddPointFromInput()" data-i18n="cadBtnAdd">إضافة</button>
+                </div>
+                <div class="cad-buttons-row">
+                    <button class="cad-action-btn" id="cadOrthoBtn" onclick="togglePlaygroundOrtho()" title="تعامد 90° (Ortho F8)">
+                        <span id="cadOrthoText" data-i18n="toolOrthoOff">تعامد: إيقاف</span>
+                    </button>
+                    <button class="cad-action-btn" onclick="cadUndoPoint()" data-i18n="cadBtnUndo">تراجع</button>
+                    <button class="cad-action-btn cad-btn-success" id="cadCloseBtn" onclick="cadClosePolygon()" data-i18n="cadBtnClose" disabled>إغلاق المضلع</button>
+                    <button class="cad-action-btn cad-btn-danger" onclick="cadClearPoints()" data-i18n="cadBtnClear">مسح وبدء جديد</button>
+                </div>
             </div>
 
 
@@ -1472,6 +1702,33 @@
                 <button class="tool-btn active" id="toolMove" onclick="togglePlaygroundMove()" title="تفعيل/تعطيل تحريك الأركان (ON/OFF)" data-i18n-title="titleToggleMove">
                     <svg viewBox="0 0 24 24"><path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"/></svg>
                     <span id="toolMoveText" data-i18n="toolMove">التحريك: تشغيل</span>
+                </button>
+
+
+
+                <!-- CAD Draw Tool (أداة رسم أوتوكاد - وضع نقاط وتوصيلها) -->
+
+                <button class="tool-btn" id="toolCad" onclick="selectPlaygroundTool('cad')" title="رسم مضلع بنمط أوتوكاد (وضع نقاط وتوصيلها)" data-i18n-title="titleCad">
+                    <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                    <span data-i18n="toolCad">رسم CAD</span>
+                </button>
+
+
+
+                <!-- Ortho 90° Tool (تعامد أوتوكاد F8) -->
+
+                <button class="tool-btn" id="toolOrtho" onclick="togglePlaygroundOrtho()" title="تفعيل/تعطيل نمط التعامد 90° (AutoCAD Ortho F8)" data-i18n-title="titleOrtho">
+                    <svg viewBox="0 0 24 24"><path d="M9 3v6h6V3H9zm4 4h-2V5h2v2zM3 9v6h6V9H3zm4 4H5v-2h2v2zm12-4v6h-6V9h6zm-2 4h-2v-2h2v2zM9 15v6h6v-6H9zm4 4h-2v-2h2v2z"/></svg>
+                    <span id="toolOrthoText" data-i18n="toolOrtho">تعامد</span>
+                </button>
+
+
+
+                <!-- CAD Coordinates Tool (جدول إحداثيات النقاط والأبعاد) -->
+
+                <button class="tool-btn" id="toolCoords" onclick="openCoordsModal()" title="عرض وتعديل جدول إحداثيات النقاط بدقة" data-i18n-title="titleCoords">
+                    <svg viewBox="0 0 24 24"><path d="M3 3v18h18V3H3zm16 16H5V5h14v14zM7 7h3v3H7V7zm0 5h3v3H7v-3zm0 5h3v-2H7v2zm5-10h5v3h-5V7zm0 5h5v3h-5v-3zm0 5h5v-2h-5v2z"/></svg>
+                    <span data-i18n="toolCoords">الإحداثيات</span>
                 </button>
 
 
@@ -2387,7 +2644,7 @@
 
                 <div class="about-name" data-i18n="appName" style="font-size:1.25rem; font-weight:900; color:#fff;">مِسَاحَة (Misaha)</div>
                 <div class="about-ver" data-i18n="appVersion" style="display:inline-block; background:rgba(16,185,129,0.18); border:1px solid #10b981; color:#10b981; padding:3px 12px; border-radius:20px; font-weight:800; font-size:0.75rem; margin-top:4px;">
-                    الإصدار 1.0 (v1.0.0)
+                    الإصدار 1.5 (v1.5.0)
                 </div>
                 
                 <p style="font-size:0.82rem; line-height:1.7; color:var(--text-sub); margin:12px auto; max-width:440px;" data-i18n="appDesc">
@@ -2649,7 +2906,7 @@
 
     <div class="single-dialog-overlay hidden" id="singleEdgeDialog">
 
-        <div class="single-dialog-card">
+        <div class="single-dialog-card" style="max-width:340px;">
 
             <div class="sheet-header">
 
@@ -2661,10 +2918,19 @@
 
             <div class="inp-wrap">
 
-                <input type="number" id="singleEdgeInput" step="any" inputmode="decimal">
+                <input type="number" id="singleEdgeInput" step="any" inputmode="decimal" onkeydown="if(event.key==='Enter') saveSingleEdgeLength()">
 
                 <span class="unit" data-i18n="unitMeterLong">متر</span>
 
+            </div>
+
+            <div style="margin-top:4px;" id="edgeModeContainer">
+                <div style="font-size:0.7rem; color:var(--text-sub); margin-bottom:4px;" data-i18n="edgeEditModeLabel">طريقة تعديل الطول:</div>
+                <select id="edgeEditMode" style="width:100%; background:#131c2e; color:#fff; border:1px solid var(--card-border); border-radius:8px; padding:6px 8px; font-size:0.75rem; font-weight:700;">
+                    <option value="chain" selected data-i18n="edgeModeChain">الحفاظ على أطوال باقي الأضلاع (إزاحة السلسلة) - مستحسن</option>
+                    <option value="single" data-i18n="edgeModeSingle">تحريك النقطة الطرفية فقط</option>
+                    <option value="symmetric" data-i18n="edgeModeSymmetric">تمديد متوازن من الطرفين</option>
+                </select>
             </div>
 
             <button class="btn-dialog-apply" onclick="saveSingleEdgeLength()" data-i18n="btnApplyEdge">
@@ -2672,6 +2938,68 @@
                 تطبيق وتحديث الشكل
 
             </button>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================================
+
+         CAD COORDINATES & DIMENSIONS INSPECTOR MODAL
+
+         ======================================================== -->
+
+    <div class="single-dialog-overlay hidden" id="coordsModal" onclick="handleCoordsModalClick(event)">
+
+        <div class="single-dialog-card" style="max-width:440px; width:95%;">
+
+            <div class="sheet-header">
+
+                <div style="font-size:0.95rem; font-weight:800; color:#ffffff;" data-i18n="coordsModalTitle">جدول إحداثيات وأبعاد الأركان (CAD)</div>
+
+                <button class="sheet-close" onclick="closeCoordsModal()">&times;</button>
+
+            </div>
+
+            <div class="coords-table-wrap">
+
+                <table class="coords-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th data-i18n="thCorner">الركن</th>
+
+                            <th>X (م)</th>
+
+                            <th>Y (م)</th>
+
+                            <th data-i18n="thDistNext">الضلع (م)</th>
+
+                            <th data-i18n="thAngle">الزاوية</th>
+
+                            <th></th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="coordsTableBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div style="display:flex; gap:8px; margin-top:8px;">
+
+                <button class="btn-dialog-apply" style="flex:1;" onclick="addPointFromCoordsModal()" data-i18n="btnAddPointCoord">+ إضافة ركن جديد</button>
+
+                <button class="btn-dialog-cancel" style="flex:1;" onclick="closeCoordsModal()" data-i18n="close">إغلاق</button>
+
+            </div>
 
         </div>
 
@@ -3182,9 +3510,9 @@
         appName: 'مِسَاحَة',
         drawerSub: 'تطبيق مساحي كاداسترالي معتمد',
         appDesc: 'تطبيق هندسي كاداسترالي متكامل لحساب وتخطيط المساحات وتقسيم الأراضي ورسم المخططات المعمارية المعتمدة وتعديل الأركان والأوتار والزوايا، يعمل بدون اتصال بالإنترنت (Zero Data).',
-        appVersion: 'الإصدار 1.0 (v1.0.0)',
+        appVersion: 'الإصدار 1.5 (v1.5.0)',
         checkUpdates: 'التحقق من وجود تحديثات',
-        updateLatest: 'أنت تستخدم أحدث إصدار مساحي متوفر (v1.0.0). لا توجد تحديثات جديدة حالياً.',
+        updateLatest: 'أنت تستخدم أحدث إصدار مساحي متوفر (v1.5.0). لا توجد تحديثات جديدة حالياً.',
         updateChecking: 'جاري التحقق من التحديثات عبر المستودع...',
         devTitle: 'تطوير وبرمجة م / أحمد صالح (Ahmed Saleh)',
         devFacebook: 'فيسبوك (Ahmed Saleh)',
@@ -3223,6 +3551,34 @@
         hideToolsBtn: 'إخفاء الأدوات',
         toolMove: 'التحريك: تشغيل',
         toolMoveOff: 'التحريك: إيقاف',
+        toolCad: 'رسم CAD',
+        titleCad: 'رسم مضلع بنمط أوتوكاد (وضع نقاط وتوصيلها)',
+        toolOrtho: 'تعامد',
+        toolOrthoOn: 'التعامد: تشغيل',
+        toolOrthoOff: 'التعامد: إيقاف',
+        titleOrtho: 'تفعيل/تعطيل نمط التعامد 90° (AutoCAD Ortho F8)',
+        toolCoords: 'الإحداثيات',
+        titleCoords: 'عرض وتعديل جدول إحداثيات النقاط بدقة',
+        cadStatusStart: 'وضع أوتوكاد: انقر لوضع النقطة الأولى (أ)',
+        cadStatusNext: 'وضع أوتوكاد: انقر لوضع النقطة التالية، أو انقر على نقطة البداية للإغلاق',
+        cadBtnClose: 'إغلاق المضلع',
+        cadBtnUndo: 'تراجع عن نقطة',
+        cadBtnClear: 'مسح وبدء جديد',
+        cadInputLen: 'طول (م):',
+        cadInputAngle: 'زاوية (°):',
+        cadBtnAdd: 'إضافة',
+        edgeEditModeLabel: 'طريقة تعديل الطول:',
+        edgeModeChain: 'الحفاظ على باقي الأضلاع (إزاحة السلسلة) - مستحسن',
+        edgeModeSingle: 'تحريك النقطة الطرفية فقط',
+        edgeModeSymmetric: 'تمديد متوازن من الطرفين',
+        coordsModalTitle: 'جدول إحداثيات وأبعاد الأركان (CAD)',
+        thCorner: 'الركن',
+        thDistNext: 'الضلع (م)',
+        thAngle: 'الزاوية',
+        btnAddPointCoord: '+ إضافة ركن جديد',
+        toastPolygonClosed: 'تم إغلاق المضلع وحساب المساحة بنجاح',
+        toastOrthoOn: 'تم تفعيل نمط التعامد 90° (Ortho ON)',
+        toastOrthoOff: 'تم إيقاف نمط التعامد (Ortho OFF)',
         toolAdd: '+نقطة',
         toolDel: '-نقطة',
         toolChords: 'الأوتار',
@@ -3507,9 +3863,9 @@
         appName: 'Misaha',
         drawerSub: 'Certified Cadastral Survey Tool',
         appDesc: 'Professional cadastral survey application for calculating land parcel areas, irregular polygons, angles, and exporting certified architectural blueprints offline (Zero Data).',
-        appVersion: 'Version 1.0 (v1.0.0)',
+        appVersion: 'Version 1.5 (v1.5.0)',
         checkUpdates: 'Check for Updates',
-        updateLatest: 'You are using the latest certified version (v1.0.0). No updates available.',
+        updateLatest: 'You are using the latest certified version (v1.5.0). No updates available.',
         updateChecking: 'Checking for updates via repository...',
         devTitle: 'Engineered & Developed by Ahmed Saleh',
         devFacebook: 'Facebook (Ahmed Saleh)',
@@ -3548,6 +3904,34 @@
         hideToolsBtn: 'Hide Tools',
         toolMove: 'Move: ON',
         toolMoveOff: 'Move: OFF',
+        toolCad: 'CAD Draw',
+        titleCad: 'AutoCAD style drawing (place points & connect)',
+        toolOrtho: 'Ortho',
+        toolOrthoOn: 'Ortho: ON',
+        toolOrthoOff: 'Ortho: OFF',
+        titleOrtho: 'Toggle 90° Orthogonal Mode (AutoCAD Ortho F8)',
+        toolCoords: 'Coordinates',
+        titleCoords: 'Inspect and edit points coordinates table',
+        cadStatusStart: 'CAD Mode: Click to place first point (A)',
+        cadStatusNext: 'CAD Mode: Click next point, or click start point to close',
+        cadBtnClose: 'Close Polygon',
+        cadBtnUndo: 'Undo Point',
+        cadBtnClear: 'Clear & Restart',
+        cadInputLen: 'Length (m):',
+        cadInputAngle: 'Angle (°):',
+        cadBtnAdd: 'Add',
+        edgeEditModeLabel: 'Adjustment method:',
+        edgeModeChain: 'Preserve other edge lengths (Chain shift) - Recommended',
+        edgeModeSingle: 'Move this endpoint only',
+        edgeModeSymmetric: 'Extend symmetrically from both ends',
+        coordsModalTitle: 'Corner Coordinates & Geometric Dimensions (CAD)',
+        thCorner: 'Corner',
+        thDistNext: 'Side (m)',
+        thAngle: 'Angle',
+        btnAddPointCoord: '+ Add New Corner',
+        toastPolygonClosed: 'Polygon closed and area calculated successfully',
+        toastOrthoOn: 'Orthogonal mode enabled (Ortho ON)',
+        toastOrthoOff: 'Orthogonal mode disabled (Ortho OFF)',
         toolAdd: '+Corner',
         toolDel: '-Corner',
         toolChords: 'Chords',
@@ -3888,10 +4272,16 @@
 
         function applyAndSaveSettings(notify = true) {
             AppSettings.lang = document.getElementById('setLanguage')?.value || 'ar';
-            AppSettings.qasabaLength = parseFloat(document.getElementById('setQasabaLen')?.value) || 3.55;
-            AppSettings.feddanArea = parseFloat(document.getElementById('setFeddanM2')?.value) || 4200.83;
-            AppSettings.decimals = parseInt(document.getElementById('setDecimals')?.value, 10) || 2;
-            AppSettings.showGrid = document.getElementById('setGridVisible')?.checked ?? true;
+            const qasabaEl = document.getElementById('setQasabaLen');
+            const qasabaVal = parseFloat(qasabaEl?.value);
+            AppSettings.qasabaLength = (qasabaEl && qasabaVal > 0) ? qasabaVal : AppSettings.qasabaLength;
+            const feddanEl = document.getElementById('setFeddanM2');
+            const feddanVal = parseFloat(feddanEl?.value);
+            AppSettings.feddanArea = (feddanEl && feddanVal > 0) ? feddanVal : AppSettings.feddanArea;
+            const decimalsVal = parseInt(document.getElementById('setDecimals')?.value, 10);
+            AppSettings.decimals = isNaN(decimalsVal) ? (AppSettings.decimals ?? 2) : decimalsVal;
+            const gridEl = document.getElementById('setGridVisible');
+            AppSettings.showGrid = gridEl ? gridEl.checked : Playground.showGrid;
             AppSettings.showCorners = document.getElementById('setCornersVisible')?.checked ?? true;
             AppSettings.autoSelect = document.getElementById('setAutoSelect')?.checked ?? true;
             AppSettings.primaryUnit = 'sqm';
@@ -3966,11 +4356,13 @@
     const dec = AppSettings.decimals ?? 2;
     const roundedArea = dec === 0 ? Math.round(areaM2) : areaM2.toFixed(dec);
 
-    const elHero = document.getElementById('heroSqmVal');
-    if (elHero) elHero.textContent = formatNum(roundedArea, dec);
-
     const elResSqm = document.getElementById('resSqm');
-    if (elResSqm) elResSqm.textContent = formatNum(roundedArea, dec);
+    if (elResSqm) {
+        elResSqm.textContent = formatNum(roundedArea, dec);
+    } else {
+        const elHero = document.getElementById('heroSqmVal');
+        if (elHero) elHero.textContent = formatNum(roundedArea, dec);
+    }
 
     const elQasaba = document.getElementById('resQasabaSq');
     if (elQasaba) elQasaba.textContent = formatNum((areaM2 / QASABA_SQUARE).toFixed(dec), dec);
@@ -4001,7 +4393,7 @@ function openExternalUrl(url) {
     }
 }
 
-const CURRENT_APP_VERSION = '1.0.0';
+const CURRENT_APP_VERSION = '1.5.0';
 
 function parseSemVer(str) {
     if (!str) return [0, 0, 0];
@@ -4306,8 +4698,9 @@ async function checkAppUpdates() {
 
             dragCornerIndex: -1,
 
-            editingEdgeIndex: null, // index or 'chord_<idx>'
-
+            editingEdgeIndex: null,
+            orthoEnabled: false,
+            cadLiveCursor: null,
             diagonalLength: 75
 
         };
@@ -4475,158 +4868,156 @@ async function checkAppUpdates() {
         // Render Canvas
 
         function renderPlayground() {
-
             const poly = document.getElementById('landPolygon');
-
             const diagLine = document.getElementById('diagonalLine');
-
             const edgesLayer = document.getElementById('edgesLayer');
-
             const verticesLayer = document.getElementById('verticesLayer');
-
+            const previewLayer = document.getElementById('cadPreviewLayer');
             const pts = Playground.points;
-
-
-
-            if (pts.length < 3) return;
-
-
-
-            // Screen points
-
-            const screenPts = pts.map(p => worldToScreen(p.x, p.y));
-
-
-
-            // 1. Polygon points string
-
-            const polyStr = screenPts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
-
-            poly.setAttribute('points', polyStr);
-
-
 
             if (diagLine) diagLine.classList.add('hidden');
 
+            if (!pts || pts.length === 0) {
+                if (poly) poly.setAttribute('points', '');
+                if (edgesLayer) edgesLayer.innerHTML = '';
+                if (verticesLayer) verticesLayer.innerHTML = '';
+                if (previewLayer) previewLayer.innerHTML = '';
+                return;
+            }
 
+            const screenPts = pts.map(p => worldToScreen(p.x, p.y));
+            const isCadDrawing = (Playground.activeTool === 'cad');
 
-            // 2. Render Outer Edge Badges with Unified Endpoint Names (الضلع أ-ب)
+            // 1. Polygon points string
+            if (pts.length >= 3 && !isCadDrawing) {
+                const polyStr = screenPts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+                if (poly) {
+                    poly.setAttribute('points', polyStr);
+                    poly.style.display = 'block';
+                }
+            } else {
+                if (poly) {
+                    poly.setAttribute('points', '');
+                    poly.style.display = 'none';
+                }
+            }
 
+            // 2. Render Outer Edge Badges
             let edgesHtml = '';
-
             const n = pts.length;
+            const numEdges = (isCadDrawing || n < 3) ? (n - 1) : n;
 
-            for (let i = 0; i < n; i++) {
+            // Draw polyline segments if in open CAD polyline mode
+            if (isCadDrawing || n < 3) {
+                for (let i = 0; i < n - 1; i++) {
+                    const pA = screenPts[i];
+                    const pB = screenPts[i + 1];
+                    edgesHtml += `<line x1="${pA.x}" y1="${pA.y}" x2="${pB.x}" y2="${pB.y}" stroke="#10b981" stroke-width="3.5" stroke-linecap="round" />`;
+                }
+            }
 
+            for (let i = 0; i < numEdges; i++) {
                 const nextIdx = (i + 1) % n;
-
                 const pA = screenPts[i];
-
                 const pB = screenPts[nextIdx];
-
                 const midX = (pA.x + pB.x) / 2;
-
                 const midY = (pA.y + pB.y) / 2;
-
-                const distM = Math.round(Math.hypot(pts[nextIdx].x - pts[i].x, pts[nextIdx].y - pts[i].y));
-
+                const distM = Math.round(Math.hypot(pts[nextIdx].x - pts[i].x, pts[nextIdx].y - pts[i].y) * 10) / 10;
                 const edgeLabel = `${getEdgeName(i, nextIdx)}`;
 
-
-
                 edgesHtml += `
-
-                    <g style="cursor:pointer;" onclick="openSingleEdgeModal(${i}, ${distM})">
-
+                    <g style="cursor:pointer;" data-edge="${i}">
                         <rect x="${midX - 38}" y="${midY - 11}" width="76" height="22" rx="11" fill="#090e17" stroke="#1e293b" stroke-width="1.5" />
-
                         <text x="${midX}" y="${midY + 4}" fill="#a7f3d0" font-size="10" font-weight="900" text-anchor="middle">${edgeLabel}: ${distM}${AppSettings.lang === "en" ? "m" : "م"}</text>
-
                     </g>
-
                 `;
-
             }
 
-
-
-            // 3. Render Internal Chords & Diagonals (الأوتار والأضلاع الداخلية)
-
-            if (Playground.hasDiagonal && Playground.chords && Playground.chords.length > 0) {
-
+            // 3. Render Internal Chords & Diagonals
+            if (!isCadDrawing && n >= 3 && Playground.hasDiagonal && Playground.chords && Playground.chords.length > 0) {
                 Playground.chords.forEach((c, cIdx) => {
-
                     if (c.from < n && c.to < n && c.from !== c.to) {
-
                         const s = screenPts[c.from];
-
                         const e = screenPts[c.to];
-
                         const midX = (s.x + e.x) / 2;
-
                         const midY = (s.y + e.y) / 2;
-
-                        const cLen = Math.round(Math.hypot(pts[c.to].x - pts[c.from].x, pts[c.to].y - pts[c.from].y));
-
+                        const cLen = Math.round(Math.hypot(pts[c.to].x - pts[c.from].x, pts[c.to].y - pts[c.from].y) * 10) / 10;
                         const chordLabel = getChordName(c.from, c.to);
 
-
-
                         edgesHtml += `
-
                             <line x1="${s.x}" y1="${s.y}" x2="${e.x}" y2="${e.y}" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="6,4" pointer-events="none" />
-
-                            <g style="cursor:pointer;" onclick="openSingleEdgeModal('chord_${cIdx}', ${cLen})">
-
+                            <g style="cursor:pointer;" data-chord="${cIdx}">
                                 <rect x="${midX - 44}" y="${midY - 11}" width="88" height="22" rx="11" fill="#090e17" stroke="#f59e0b" stroke-width="1.5" />
-
                                 <text x="${midX}" y="${midY + 4}" fill="#fde047" font-size="10" font-weight="900" text-anchor="middle">${chordLabel}: ${cLen}${AppSettings.lang === "en" ? "m" : "م"}</text>
-
                             </g>
-
                         `;
-
                     }
-
                 });
-
             }
 
+            if (edgesLayer) edgesLayer.innerHTML = edgesHtml;
 
-
-            edgesLayer.innerHTML = edgesHtml;
-
-
-
-            // 4. Render Corner Circles with Arabic Letters (أ، ب، ج، د...)
-
+            // 4. Render Corner Circles
             let verticesHtml = '';
-
             screenPts.forEach((p, idx) => {
-
                 const cName = AppSettings.showCorners ? getCornerName(idx) : '';
-
+                const isStartInCad = (isCadDrawing && idx === 0 && n >= 3);
                 verticesHtml += `
-
                     <g data-corner="${idx}" style="cursor:${Playground.moveEnabled ? 'grab' : 'pointer'};">
-
-                        <circle cx="${p.x}" cy="${p.y}" r="17" fill="rgba(16, 185, 129, 0.2)" />
-
-                        <circle cx="${p.x}" cy="${p.y}" r="11" fill="#ffffff" stroke="#10b981" stroke-width="3" />
-
+                        <circle cx="${p.x}" cy="${p.y}" r="${isStartInCad ? 20 : 17}" fill="${isStartInCad ? 'rgba(56, 189, 248, 0.35)' : 'rgba(16, 185, 129, 0.2)'}" />
+                        <circle cx="${p.x}" cy="${p.y}" r="11" fill="#ffffff" stroke="${isStartInCad ? '#38bdf8' : '#10b981'}" stroke-width="3" />
                         <text x="${p.x}" y="${p.y + 4}" font-size="11" font-weight="900" text-anchor="middle" fill="#064e3b" pointer-events="none">${cName}</text>
-
                     </g>
-
                 `;
-
             });
 
-            verticesLayer.innerHTML = verticesHtml;
+            if (verticesLayer) verticesLayer.innerHTML = verticesHtml;
 
+            // Render CAD live preview if active
+            if (isCadDrawing && Playground.cadLiveCursor) {
+                renderCadRubberPreview();
+            }
         }
 
+        function renderCadRubberPreview() {
+            const previewLayer = document.getElementById('cadPreviewLayer');
+            if (!previewLayer) return;
+            const pts = Playground.points;
+            if (pts.length === 0 || !Playground.cadLiveCursor) {
+                previewLayer.innerHTML = '';
+                return;
+            }
+            const lastP = pts[pts.length - 1];
+            const pScreenLast = worldToScreen(lastP.x, lastP.y);
+            const pScreenCur = worldToScreen(Playground.cadLiveCursor.wx, Playground.cadLiveCursor.wy);
+            const d = Playground.cadLiveCursor.dist;
+            const theta = Playground.cadLiveCursor.angle;
+            const isSnap = Playground.cadLiveCursor.isSnapToStart;
 
+            const midX = (pScreenLast.x + pScreenCur.x) / 2;
+            const midY = (pScreenLast.y + pScreenCur.y) / 2;
+
+            let html = `
+                <line x1="${pScreenLast.x}" y1="${pScreenLast.y}" x2="${pScreenCur.x}" y2="${pScreenCur.y}" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="5,4" pointer-events="none" />
+                <g pointer-events="none">
+                    <rect x="${midX - 45}" y="${midY - 12}" width="90" height="22" rx="6" fill="rgba(15, 23, 42, 0.9)" stroke="#38bdf8" stroke-width="1.5" />
+                    <text x="${midX}" y="${midY + 3.5}" fill="#38bdf8" font-size="10.5" font-weight="900" text-anchor="middle">${d}م | ${theta}°</text>
+                </g>
+            `;
+
+            if (isSnap && pts.length >= 3) {
+                const p0s = worldToScreen(pts[0].x, pts[0].y);
+                html += `
+                    <g pointer-events="none">
+                        <rect x="${p0s.x - 14}" y="${p0s.y - 14}" width="28" height="28" fill="none" stroke="#22c55e" stroke-width="3" rx="4" />
+                        <rect x="${p0s.x - 55}" y="${p0s.y - 36}" width="110" height="20" rx="6" fill="#15803d" stroke="#22c55e" stroke-width="1" />
+                        <text x="${p0s.x}" y="${p0s.y - 22}" fill="#ffffff" font-size="10" font-weight="900" text-anchor="middle">انقر للإغلاق (Close)</text>
+                    </g>
+                `;
+            }
+
+            previewLayer.innerHTML = html;
+        }
 
         // Pointer Event Handlers
 
@@ -4638,17 +5029,76 @@ async function checkAppUpdates() {
             const sx = e.clientX - rect.left;
             const sy = e.clientY - rect.top;
 
+            // Middle Mouse Button (Wheel click) pans canvas in any mode
+            if (e.button === 1) {
+                Playground.isPanning = true;
+                Playground.panStartX = e.clientX - Playground.panX;
+                Playground.panStartY = e.clientY - Playground.panY;
+                return;
+            }
+
+            // CAD Mode Click Handler
+            if (Playground.activeTool === 'cad') {
+                if (Playground.cadLiveCursor && Playground.cadLiveCursor.isSnapToStart && Playground.points.length >= 3) {
+                    cadClosePolygon();
+                    return;
+                }
+                const targetCorner = e.target.closest('[data-corner]');
+                if (targetCorner) {
+                    const cIdx = parseInt(targetCorner.getAttribute('data-corner'), 10);
+                    if (cIdx === 0 && Playground.points.length >= 3) {
+                        cadClosePolygon();
+                        return;
+                    }
+                }
+
+                let world = screenToWorld(sx, sy);
+                let wx = Math.round(world.x * 10) / 10;
+                let wy = Math.round(world.y * 10) / 10;
+
+                if (Playground.orthoEnabled && Playground.points.length > 0) {
+                    const lastP = Playground.points[Playground.points.length - 1];
+                    if (Math.abs(wx - lastP.x) >= Math.abs(wy - lastP.y)) {
+                        wy = lastP.y;
+                    } else {
+                        wx = lastP.x;
+                    }
+                }
+
+                Playground.points.push({ x: wx, y: wy });
+
+                const closeBtn = document.getElementById('cadCloseBtn');
+                if (closeBtn) closeBtn.disabled = (Playground.points.length < 3);
+                const statusText = document.getElementById('playgroundStatusText');
+                if (statusText) statusText.textContent = (AppSettings.lang === 'en') ?
+                    'CAD Mode: Click next point, or click start point to close' :
+                    'وضع أوتوكاد: انقر لوضع النقطة التالية، أو انقر على نقطة البداية للإغلاق';
+
+                renderPlayground();
+                updateCalculationsAndUI();
+                return;
+            }
+
             // Edge / Chord badge interaction
             const targetEdge = e.target.closest('[data-edge]');
             if (targetEdge) {
                 const edgeIdx = parseInt(targetEdge.getAttribute('data-edge'), 10);
-                openEdgeModal(edgeIdx);
+                const pts = Playground.points;
+                const nextIdx = (edgeIdx + 1) % pts.length;
+                const edgeLen = Math.round(Math.hypot(pts[nextIdx].x - pts[edgeIdx].x, pts[nextIdx].y - pts[edgeIdx].y) * 10) / 10;
+                openSingleEdgeModal(edgeIdx, edgeLen);
                 return;
             }
             const targetChord = e.target.closest('[data-chord]');
             if (targetChord) {
                 const chordIdx = parseInt(targetChord.getAttribute('data-chord'), 10);
-                openChordModal(chordIdx);
+                const chord = Playground.chords[chordIdx];
+                if (chord) {
+                    const pA = Playground.points[chord.from];
+                    const pB = Playground.points[chord.to];
+                    const chordLen = Math.round(Math.hypot(pB.x - pA.x, pB.y - pA.y) * 10) / 10;
+                    openSingleEdgeModal('chord_' + chordIdx, chordLen);
+                }
                 return;
             }
 
@@ -4680,8 +5130,6 @@ async function checkAppUpdates() {
             Playground.panStartY = e.clientY - Playground.panY;
         }
 
-
-
         let playgroundRafId = null;
 
         function onPlaygroundPointerMove(e) {
@@ -4691,10 +5139,69 @@ async function checkAppUpdates() {
             const sx = e.clientX - rect.left;
             const sy = e.clientY - rect.top;
 
+            // CAD Mode Pointer Move Handler
+            if (Playground.activeTool === 'cad') {
+                if (Playground.points.length > 0) {
+                    let world = screenToWorld(sx, sy);
+                    let wx = Math.round(world.x * 10) / 10;
+                    let wy = Math.round(world.y * 10) / 10;
+                    const lastP = Playground.points[Playground.points.length - 1];
+
+                    if (Playground.orthoEnabled) {
+                        const dx = Math.abs(wx - lastP.x);
+                        const dy = Math.abs(wy - lastP.y);
+                        if (dx >= dy) {
+                            wy = lastP.y;
+                        } else {
+                            wx = lastP.x;
+                        }
+                    }
+
+                    let isSnap = false;
+                    if (Playground.points.length >= 3) {
+                        const p0s = worldToScreen(Playground.points[0].x, Playground.points[0].y);
+                        if (Math.hypot(sx - p0s.x, sy - p0s.y) < 28) {
+                            wx = Playground.points[0].x;
+                            wy = Playground.points[0].y;
+                            isSnap = true;
+                        }
+                    }
+
+                    const dist = Math.round(Math.hypot(wx - lastP.x, wy - lastP.y) * 10) / 10;
+                    let angleDeg = Math.round(Math.atan2(wy - lastP.y, wx - lastP.x) * (180 / Math.PI));
+                    if (angleDeg < 0) angleDeg += 360;
+
+                    Playground.cadLiveCursor = {
+                        wx, wy, dist, angle: angleDeg, isSnapToStart: isSnap
+                    };
+
+                    const lInput = document.getElementById('cadLengthInput');
+                    const aInput = document.getElementById('cadAngleInput');
+                    if (lInput && !lInput.matches(':focus')) lInput.placeholder = dist;
+                    if (aInput && !aInput.matches(':focus')) aInput.placeholder = angleDeg;
+
+                    renderCadRubberPreview();
+                }
+                return;
+            }
+
             if (Playground.dragCornerIndex >= 0) {
                 const world = screenToWorld(sx, sy);
-                Playground.points[Playground.dragCornerIndex].x = Math.round(world.x);
-                Playground.points[Playground.dragCornerIndex].y = Math.round(world.y);
+                let newX = Math.round(world.x);
+                let newY = Math.round(world.y);
+
+                if (Playground.orthoEnabled && Playground.points.length > 1) {
+                    const idx = Playground.dragCornerIndex;
+                    const prevP = Playground.points[(idx - 1 + Playground.points.length) % Playground.points.length];
+                    if (Math.abs(newX - prevP.x) >= Math.abs(newY - prevP.y)) {
+                        newY = prevP.y;
+                    } else {
+                        newX = prevP.x;
+                    }
+                }
+
+                Playground.points[Playground.dragCornerIndex].x = newX;
+                Playground.points[Playground.dragCornerIndex].y = newY;
 
                 if (!playgroundRafId) {
                     playgroundRafId = requestAnimationFrame(() => {
@@ -4728,8 +5235,6 @@ async function checkAppUpdates() {
             Playground.dragCornerIndex = -1;
             Playground.isPanning = false;
         }
-
-
 
         // Zoom & Viewport Controls
 
@@ -4832,86 +5337,177 @@ async function checkAppUpdates() {
         }
 
         function selectPlaygroundTool(tool) {
-
             Playground.activeTool = tool;
 
-            ['toolMove','toolAdd','toolDel'].forEach(id => document.getElementById(id)?.classList.remove('active'));
+            ['toolMove','toolCad','toolAdd','toolDel'].forEach(id => document.getElementById(id)?.classList.remove('active'));
 
-
-
+            const cadBar = document.getElementById('cadControlBar');
+            const previewLayer = document.getElementById('cadPreviewLayer');
             const statusText = document.getElementById('playgroundStatusText');
+            const isEn = (AppSettings.lang === 'en');
 
             if (tool === 'move') {
-
-                document.getElementById('toolMove').classList.add('active');
-
-                if (statusText) statusText.textContent = (AppSettings.lang === 'en') ? 'Move Mode: Drag corners to adjust parcel' : 'وضع التحريك: اسحب الأركان لتعديل شكل الأرض';
-
+                document.getElementById('toolMove')?.classList.add('active');
+                if (cadBar) cadBar.classList.add('hidden');
+                if (previewLayer) previewLayer.innerHTML = '';
+                Playground.cadLiveCursor = null;
+                if (statusText) statusText.textContent = isEn ? 'Move Mode: Drag corners to adjust parcel' : 'وضع التحريك: اسحب الأركان لتعديل شكل الأرض';
+            } else if (tool === 'cad') {
+                document.getElementById('toolCad')?.classList.add('active');
+                if (cadBar) cadBar.classList.remove('hidden');
+                const closeBtn = document.getElementById('cadCloseBtn');
+                if (closeBtn) closeBtn.disabled = (Playground.points.length < 3);
+                if (statusText) statusText.textContent = Playground.points.length === 0 ?
+                    (isEn ? 'CAD Mode: Click to place first point (A)' : 'وضع أوتوكاد: انقر لوضع النقطة الأولى (أ)') :
+                    (isEn ? 'CAD Mode: Click next point, or click start point to close' : 'وضع أوتوكاد: انقر لوضع النقطة التالية، أو انقر على نقطة البداية للإغلاق');
             } else if (tool === 'add') {
-
-                document.getElementById('toolAdd').classList.add('active');
-
-                if (statusText) statusText.textContent = (AppSettings.lang === 'en') ? 'Add Mode: Tap canvas to add a new corner' : 'وضع الإضافة: المس أي مكان بالشاشة لإضافة ركن جديد';
-
+                document.getElementById('toolAdd')?.classList.add('active');
+                if (cadBar) cadBar.classList.add('hidden');
+                if (previewLayer) previewLayer.innerHTML = '';
+                Playground.cadLiveCursor = null;
+                if (statusText) statusText.textContent = isEn ? 'Add Mode: Tap canvas to add a new corner' : 'وضع الإضافة: المس أي مكان بالشاشة لإضافة ركن جديد';
             } else if (tool === 'del') {
-
-                document.getElementById('toolDel').classList.add('active');
-
-                if (statusText) statusText.textContent = (AppSettings.lang === 'en') ? 'Delete Mode: Tap a corner to remove it' : 'وضع الحذف: المس الركن المراد حذفه من الأرض';
-
+                document.getElementById('toolDel')?.classList.add('active');
+                if (cadBar) cadBar.classList.add('hidden');
+                if (previewLayer) previewLayer.innerHTML = '';
+                Playground.cadLiveCursor = null;
+                if (statusText) statusText.textContent = isEn ? 'Delete Mode: Tap a corner to remove it' : 'وضع الحذف: المس الركن المراد حذفه من الأرض';
             }
-
+            renderPlayground();
         }
 
+        function togglePlaygroundOrtho() {
+            Playground.orthoEnabled = !Playground.orthoEnabled;
+            const btn = document.getElementById('toolOrtho');
+            const cadBtn = document.getElementById('cadOrthoBtn');
+            const cadText = document.getElementById('cadOrthoText');
+            const isEn = (AppSettings.lang === 'en');
 
+            if (btn) btn.classList.toggle('active', Playground.orthoEnabled);
+            if (cadBtn) cadBtn.classList.toggle('active', Playground.orthoEnabled);
+            if (cadText) cadText.textContent = Playground.orthoEnabled ? (isEn ? 'Ortho: ON' : 'تعامد: تشغيل') : (isEn ? 'Ortho: OFF' : 'تعامد: إيقاف');
+
+            showToast(Playground.orthoEnabled ? (isEn ? 'Orthogonal 90° Mode enabled (Ortho ON)' : 'تم تفعيل نمط التعامد 90° (Ortho ON)') : (isEn ? 'Orthogonal Mode disabled' : 'تم إيقاف نمط التعامد'), 'info');
+            renderPlayground();
+        }
+
+        function cadAddPointFromInput() {
+            const lenInput = document.getElementById('cadLengthInput');
+            const angleInput = document.getElementById('cadAngleInput');
+            const val = parseFloat(lenInput?.value);
+            const isEn = (AppSettings.lang === 'en');
+
+            if (isNaN(val) || val <= 0) {
+                showToast(isEn ? 'Please enter a valid length in meters' : 'يرجى إدخال طول صحيح بالمتر', 'error');
+                lenInput?.focus();
+                return;
+            }
+
+            let angleDeg = parseFloat(angleInput?.value);
+            if (isNaN(angleDeg)) {
+                angleDeg = 0;
+            }
+            const angleRad = (angleDeg * Math.PI) / 180;
+            const pts = Playground.points;
+
+            if (pts.length === 0) {
+                pts.push({ x: 0, y: 0 });
+                const nextX = Math.round(Math.cos(angleRad) * val * 10) / 10;
+                const nextY = Math.round(Math.sin(angleRad) * val * 10) / 10;
+                pts.push({ x: nextX, y: nextY });
+            } else {
+                const lastP = pts[pts.length - 1];
+                const nextX = Math.round((lastP.x + Math.cos(angleRad) * val) * 10) / 10;
+                const nextY = Math.round((lastP.y + Math.sin(angleRad) * val) * 10) / 10;
+                pts.push({ x: nextX, y: nextY });
+            }
+
+            lenInput.value = '';
+            const closeBtn = document.getElementById('cadCloseBtn');
+            if (closeBtn) closeBtn.disabled = (pts.length < 3);
+            const statusText = document.getElementById('playgroundStatusText');
+            if (statusText) statusText.textContent = isEn ?
+                'CAD Mode: Click next point, or click start point to close' :
+                'وضع أوتوكاد: انقر لوضع النقطة التالية، أو انقر على نقطة البداية للإغلاق';
+
+            renderPlayground();
+            updateCalculationsAndUI();
+            fitPlaygroundView();
+        }
+
+        function cadUndoPoint() {
+            const pts = Playground.points;
+            if (pts.length === 0) return;
+            pts.pop();
+            const closeBtn = document.getElementById('cadCloseBtn');
+            if (closeBtn) closeBtn.disabled = (pts.length < 3);
+            const statusText = document.getElementById('playgroundStatusText');
+            const isEn = (AppSettings.lang === 'en');
+            if (statusText) statusText.textContent = pts.length === 0 ?
+                (isEn ? 'CAD Mode: Click to place first point (A)' : 'وضع أوتوكاد: انقر لوضع النقطة الأولى (أ)') :
+                (isEn ? 'CAD Mode: Click next point, or click start point to close' : 'وضع أوتوكاد: انقر لوضع النقطة التالية، أو انقر على نقطة البداية للإغلاق');
+
+            renderPlayground();
+            updateCalculationsAndUI();
+        }
+
+        function cadClearPoints() {
+            Playground.points = [];
+            Playground.chords = [];
+            const closeBtn = document.getElementById('cadCloseBtn');
+            if (closeBtn) closeBtn.disabled = true;
+            const statusText = document.getElementById('playgroundStatusText');
+            const isEn = (AppSettings.lang === 'en');
+            if (statusText) statusText.textContent = isEn ? 'CAD Mode: Click to place first point (A)' : 'وضع أوتوكاد: انقر لوضع النقطة الأولى (أ)';
+
+            renderPlayground();
+            updateCalculationsAndUI();
+            showToast(isEn ? 'Canvas cleared. Click to place first point' : 'تم مسح اللوحة. انقر لوضع النقطة الأولى', 'info');
+        }
+
+        function cadClosePolygon() {
+            const pts = Playground.points;
+            const isEn = (AppSettings.lang === 'en');
+            if (pts.length < 3) {
+                showToast(isEn ? 'A polygon requires at least 3 points' : 'المضلع يتطلب 3 نقاط على الأقل', 'warning');
+                return;
+            }
+            Playground.hasDiagonal = true;
+            if (pts.length === 4 && (!Playground.chords || Playground.chords.length === 0)) {
+                Playground.chords = [{ from: 0, to: 2 }];
+            }
+            const previewLayer = document.getElementById('cadPreviewLayer');
+            if (previewLayer) previewLayer.innerHTML = '';
+            Playground.cadLiveCursor = null;
+
+            selectPlaygroundTool('move');
+            fitPlaygroundView();
+            updateCalculationsAndUI();
+            showToast(isEn ? 'Polygon closed and area calculated successfully' : 'تم إغلاق المضلع وحساب المساحة بنجاح', 'success');
+        }
 
         function addCornerAt(wx, wy) {
-
             Playground.points.push({ x: wx, y: wy });
-
             selectPlaygroundTool('move');
-
             renderPlayground();
-
             updateCalculationsAndUI();
-
         }
-
-
 
         function deleteCorner(index) {
-
             if (Playground.points.length <= 3) {
-
                 alert(AppSettings.lang === 'en' ? 'A land parcel polygon cannot have fewer than 3 corners (triangle).' : 'لا يمكن أن يقل مضلع الأرض عن 3 أركان (مثلث).');
-
                 selectPlaygroundTool('move');
-
                 return;
-
             }
-
             Playground.points.splice(index, 1);
-
             Playground.chords = Playground.chords.filter(c => c.from !== index && c.to !== index).map(c => ({
-
                 from: c.from > index ? c.from - 1 : c.from,
-
                 to: c.to > index ? c.to - 1 : c.to
-
             }));
-
             selectPlaygroundTool('move');
-
             renderPlayground();
-
             updateCalculationsAndUI();
-
         }
-
-
-
-        // Toggle Sidebar Toolbar with Arrow
 
         function toggleSideToolbar() {
 
@@ -4988,6 +5584,7 @@ async function checkAppUpdates() {
         function togglePlaygroundGrid() {
 
             Playground.showGrid = !Playground.showGrid;
+            AppSettings.showGrid = Playground.showGrid;
 
             const wrap = document.getElementById('playgroundWrap');
 
@@ -4996,6 +5593,10 @@ async function checkAppUpdates() {
             if (wrap) wrap.classList.toggle('no-grid', !Playground.showGrid);
 
             if (btn) btn.classList.toggle('toggle-on', Playground.showGrid);
+
+            try {
+                localStorage.setItem('arabic_land_measurer_settings', JSON.stringify(AppSettings));
+            } catch (_) {}
 
         }
 
@@ -5045,7 +5646,10 @@ async function checkAppUpdates() {
 
 
 
+            const modeContainer = document.getElementById('edgeModeContainer');
+
             if (typeof edgeIndexOrDiag === 'string' && edgeIndexOrDiag.startsWith('chord_')) {
+                if (modeContainer) modeContainer.classList.add('hidden');
 
                 const cIdx = parseInt(edgeIndexOrDiag.replace('chord_', ''), 10);
 
@@ -5062,6 +5666,7 @@ async function checkAppUpdates() {
                 }
 
             } else if (typeof edgeIndexOrDiag === 'number') {
+                if (modeContainer) modeContainer.classList.remove('hidden');
 
                 const nextIdx = (edgeIndexOrDiag + 1) % n;
 
@@ -5075,7 +5680,7 @@ async function checkAppUpdates() {
 
             dialog.classList.remove('hidden');
 
-            input.focus();
+            setTimeout(() => input?.select(), 60);
 
         }
 
@@ -5090,49 +5695,162 @@ async function checkAppUpdates() {
 
 
         function saveSingleEdgeLength() {
-    try {
-        const input = document.getElementById('singleEdgeInput');
-        const val = parseFloat(input?.value);
-        if (isNaN(val) || val <= 0) return;
-
-        const edge = Playground.editingEdgeIndex;
-        const pts = Playground.points;
-
-        if (typeof edge === 'string' && edge.startsWith('chord_')) {
-            const cIdx = parseInt(edge.replace('chord_', ''), 10);
-            const c = Playground.chords[cIdx];
-            if (c && c.from < pts.length && c.to < pts.length) {
-                const pA = pts[c.from];
-                const pB = pts[c.to];
-                const dx = pB.x - pA.x;
-                const dy = pB.y - pA.y;
-                const cur = Math.hypot(dx, dy);
-                if (cur > 0) {
-                    pB.x = Math.round(pA.x + (dx / cur) * val);
-                    pB.y = Math.round(pA.y + (dy / cur) * val);
+            try {
+                const input = document.getElementById('singleEdgeInput');
+                const isEn = (AppSettings.lang === 'en');
+                const modeSelect = document.getElementById('edgeEditMode');
+                const mode = modeSelect ? modeSelect.value : 'chain';
+                const val = parseFloat(input?.value);
+                if (isNaN(val) || val <= 0) {
+                    showToast(isEn ? 'Please enter a valid positive length' : 'يرجى إدخال طول موجب وصحيح', 'error');
+                    input?.focus();
+                    return;
                 }
-            }
-        } else if (typeof edge === 'number') {
-            const nextIdx = (edge + 1) % pts.length;
-            const pA = pts[edge];
-            const pB = pts[nextIdx];
-            const dx = pB.x - pA.x;
-            const dy = pB.y - pA.y;
-            const cur = Math.hypot(dx, dy);
-            if (cur > 0) {
-                pB.x = Math.round(pA.x + (dx / cur) * val);
-                pB.y = Math.round(pA.y + (dy / cur) * val);
+
+                const edge = Playground.editingEdgeIndex;
+                const pts = Playground.points;
+                const n = pts.length;
+
+                if (typeof edge === 'string' && edge.startsWith('chord_')) {
+                    const cIdx = parseInt(edge.replace('chord_', ''), 10);
+                    const c = Playground.chords[cIdx];
+                    if (c && c.from < n && c.to < n) {
+                        const pA = pts[c.from];
+                        const pB = pts[c.to];
+                        const dx = pB.x - pA.x;
+                        const dy = pB.y - pA.y;
+                        const cur = Math.hypot(dx, dy);
+                        if (cur > 0) {
+                            pB.x = Math.round(pA.x + (dx / cur) * val);
+                            pB.y = Math.round(pA.y + (dy / cur) * val);
+                        }
+                    }
+                } else if (typeof edge === 'number') {
+                    const nextIdx = (edge + 1) % n;
+                    adjustEdgeLength(pts, edge, nextIdx, val, mode);
+                }
+
+                closeSingleEdgeDialog();
+                renderPlayground();
+                updateCalculationsAndUI();
+            } catch (err) {
+                console.error('Error saving edge length:', err);
+                closeSingleEdgeDialog();
             }
         }
 
-        renderPlayground();
-        updateCalculationsAndUI();
-    } catch (err) {
-        console.error('Error saving edge length:', err);
-    } finally {
-        closeSingleEdgeDialog();
-    }
-}
+        function adjustEdgeLength(pts, i, next, newLen, mode = 'chain') {
+            const n = pts.length;
+            if (n < 2) return;
+            const pA = pts[i];
+            const pB = pts[next];
+            const dx = pB.x - pA.x;
+            const dy = pB.y - pA.y;
+            const curLen = Math.hypot(dx, dy);
+            if (curLen === 0) return;
+
+            const diff = newLen - curLen;
+            const ux = dx / curLen;
+            const uy = dy / curLen;
+
+            if (mode === 'single') {
+                pB.x = Math.round(pA.x + ux * newLen);
+                pB.y = Math.round(pA.y + uy * newLen);
+            } else if (mode === 'symmetric') {
+                const half = diff / 2;
+                pA.x = Math.round(pA.x - ux * half);
+                pA.y = Math.round(pA.y - uy * half);
+                pB.x = Math.round(pB.x + ux * half);
+                pB.y = Math.round(pB.y + uy * half);
+            } else {
+                // 'chain' mode (Chain Shift - preserves all downstream & previous side lengths!)
+                const shiftX = Math.round(ux * diff);
+                const shiftY = Math.round(uy * diff);
+
+                if (next === 0) {
+                    // Closing edge: adjust pA backwards from pB (vertex 0)
+                    pA.x = Math.round(pB.x - ux * newLen);
+                    pA.y = Math.round(pB.y - uy * newLen);
+                } else {
+                    // Forward chain shift: shifts pB and all subsequent vertices
+                    for (let k = next; k < n; k++) {
+                        pts[k].x += shiftX;
+                        pts[k].y += shiftY;
+                    }
+                }
+            }
+        }
+
+        // CAD Coordinates Inspector Functions
+        function openCoordsModal() {
+            const modal = document.getElementById('coordsModal');
+            if (modal) modal.classList.remove('hidden');
+            populateCoordsTable();
+        }
+
+        function closeCoordsModal() {
+            const modal = document.getElementById('coordsModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function handleCoordsModalClick(e) {
+            if (e.target.id === 'coordsModal') closeCoordsModal();
+        }
+
+        function populateCoordsTable() {
+            const tbody = document.getElementById('coordsTableBody');
+            if (!tbody) return;
+            const pts = Playground.points;
+            const n = pts.length;
+            let html = '';
+            pts.forEach((p, idx) => {
+                const nextIdx = (idx + 1) % n;
+                const nextP = pts[nextIdx];
+                const dist = n > 1 ? Math.round(Math.hypot(nextP.x - p.x, nextP.y - p.y) * 10) / 10 : 0;
+                const angle = n >= 3 ? getCornerAngle(idx) : 0;
+                const name = getCornerName(idx);
+                html += `
+                    <tr>
+                        <td style="font-weight:900; color:var(--primary); font-size:0.85rem;">${name}</td>
+                        <td><input type="number" class="coords-inp" step="any" value="${p.x}" onchange="updatePointCoord(${idx}, 'x', this.value)"></td>
+                        <td><input type="number" class="coords-inp" step="any" value="${p.y}" onchange="updatePointCoord(${idx}, 'y', this.value)"></td>
+                        <td style="color:#a7f3d0; font-weight:800;">${dist}</td>
+                        <td style="color:#fde047; font-weight:700;">${angle}°</td>
+                        <td>
+                            ${n > 3 ? `<button class="coords-btn-del" onclick="deleteCorner(${idx}); populateCoordsTable();" title="حذف">&times;</button>` : ''}
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function updatePointCoord(idx, axis, val) {
+            const num = parseFloat(val);
+            if (isNaN(num)) return;
+            if (Playground.points[idx]) {
+                Playground.points[idx][axis] = Math.round(num * 100) / 100;
+                renderPlayground();
+                updateCalculationsAndUI();
+                populateCoordsTable();
+            }
+        }
+
+        function addPointFromCoordsModal() {
+            const pts = Playground.points;
+            const n = pts.length;
+            let newX = 50, newY = 50;
+            if (n > 0) {
+                newX = pts[n - 1].x + 20;
+                newY = pts[n - 1].y;
+            }
+            pts.push({ x: newX, y: newY });
+            renderPlayground();
+            updateCalculationsAndUI();
+            populateCoordsTable();
+            const isEn = (AppSettings.lang === 'en');
+            showToast(isEn ? 'Corner added' : 'تمت إضافة الركن بنجاح', 'success');
+        }
 
         function openChordsManagerModal() {
 
@@ -5755,7 +6473,7 @@ async function checkAppUpdates() {
             }
 
             container.innerHTML = `
-                <svg width="100%" height="auto" viewBox="0 0 ${svgW} ${svgH}" style="background:${bgFill}; display:block; max-width:100%; height:auto;" preserveAspectRatio="xMidYMid meet">
+                <svg width="100%" viewBox="0 0 ${svgW} ${svgH}" style="background:${bgFill}; display:block; max-width:100%; height:auto;" preserveAspectRatio="xMidYMid meet">
                     <style>
                         text { font-family: 'Cairo', 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
                     </style>
@@ -6280,6 +6998,12 @@ async function checkAppUpdates() {
 
 
             displayResultsSheet(areaM2, perimeterM);
+
+            // Keep the top status pill in sync with the parcel while in move mode,
+            // but preserve the mode-specific guidance shown by CAD/add/delete tools.
+            if (Playground.activeTool === 'move') {
+                updatePlaygroundStatus();
+            }
 
         }
 
@@ -6879,9 +7603,9 @@ async function checkAppUpdates() {
             <g transform="translate(300,175)"><circle r="11" class="diag-corner-circle"/><text class="diag-corner-text">ج</text></g>
             <g transform="translate(80,175)"><circle r="11" class="diag-corner-circle"/><text class="diag-corner-text">د</text></g>
 
-            <g id="tag_fBaseMinor" class="diagram-tag" transform="translate(150, 26)"><rect x="-55" y="-12" width="110" height="24" rx="6" /><text id="lbl_fBaseMinor">قاعدة صغرى: 40 م</text></g>
-            <g id="tag_fBaseMajor" class="diagram-tag" transform="translate(190, 196)"><rect x="-55" y="-12" width="110" height="24" rx="6" /><text id="lbl_fBaseMajor">قاعدة كبرى: 65 م</text></g>
-            <g id="tag_fHeight" class="diagram-tag diag-tag-amber" transform="translate(42, 112)"><rect x="-42" y="-12" width="84" height="24" rx="6" /><text id="lbl_fHeight">الارتفاع: 35 م</text></g>
+            <g id="tag_TR_BaseMinor" class="diagram-tag" transform="translate(150, 26)"><rect x="-55" y="-12" width="110" height="24" rx="6" /><text id="lbl_TR_BaseMinor">قاعدة صغرى: 45 م</text></g>
+            <g id="tag_TR_BaseMajor" class="diagram-tag" transform="translate(190, 196)"><rect x="-55" y="-12" width="110" height="24" rx="6" /><text id="lbl_TR_BaseMajor">قاعدة كبرى: 75 م</text></g>
+            <g id="tag_TR_Height" class="diagram-tag diag-tag-amber" transform="translate(42, 112)"><rect x="-42" y="-12" width="84" height="24" rx="6" /><text id="lbl_TR_Height">الارتفاع: 40 م</text></g>
         `;
     } else if (selectedFixedShape === 'rect') {
         svg.innerHTML = `
@@ -6999,20 +7723,26 @@ async function checkAppUpdates() {
             <g transform="translate(100,185)"><circle r="11" class="diag-corner-circle"/><text class="diag-corner-text">د</text></g>
             <g transform="translate(55,100)"><circle r="11" class="diag-corner-circle"/><text class="diag-corner-text">هـ</text></g>
 
-            <g id="tag_fP_A" class="diagram-tag" transform="translate(245, 60)"><rect x="-40" y="-10" width="80" height="20" rx="4" fill="rgba(15,23,42,0.9)" stroke="#10b981"/><text font-size="9" fill="#a7f3d0" text-anchor="middle" dominant-baseline="central">أ-ب: 40 م</text></g>
-            <g id="tag_fP_B" class="diagram-tag" transform="translate(295, 145)"><rect x="-40" y="-10" width="80" height="20" rx="4" fill="rgba(15,23,42,0.9)" stroke="#10b981"/><text font-size="9" fill="#a7f3d0" text-anchor="middle" dominant-baseline="central">ب-ج: 45 م</text></g>
-            <g id="tag_fP_C" class="diagram-tag" transform="translate(180, 196)"><rect x="-40" y="-10" width="80" height="20" rx="4" fill="rgba(15,23,42,0.9)" stroke="#10b981"/><text font-size="9" fill="#a7f3d0" text-anchor="middle" dominant-baseline="central">ج-د: 50 م</text></g>
-            <g id="tag_fP_D" class="diagram-tag" transform="translate(65, 145)"><rect x="-40" y="-10" width="80" height="20" rx="4" fill="rgba(15,23,42,0.9)" stroke="#10b981"/><text font-size="9" fill="#a7f3d0" text-anchor="middle" dominant-baseline="central">د-هـ: 42 م</text></g>
-            <g id="tag_fP_E" class="diagram-tag" transform="translate(110, 60)"><rect x="-40" y="-10" width="80" height="20" rx="4" fill="rgba(15,23,42,0.9)" stroke="#10b981"/><text font-size="9" fill="#a7f3d0" text-anchor="middle" dominant-baseline="central">هـ-أ: 38 م</text></g>
-            <g id="tag_fP_D1" class="diagram-tag diag-tag-amber" transform="translate(215, 110)"><rect x="-38" y="-10" width="76" height="20" rx="4" fill="rgba(15,23,42,0.9)" stroke="#f59e0b"/><text font-size="9" fill="#fde047" text-anchor="middle" dominant-baseline="central">أ-ج: 65 م</text></g>
-            <g id="tag_fP_D2" class="diagram-tag diag-tag-amber" transform="translate(135, 110)"><rect x="-38" y="-10" width="76" height="20" rx="4" fill="rgba(15,23,42,0.9)" stroke="#f59e0b"/><text font-size="9" fill="#fde047" text-anchor="middle" dominant-baseline="central">أ-د: 60 م</text></g>
+            <g id="tag_fP_A" class="diagram-tag" transform="translate(245, 60)"><rect x="-40" y="-10" width="80" height="20" rx="4" fill="rgba(15,23,42,0.9)" stroke="#10b981"/><text id="lbl_fP_A" font-size="9" fill="#a7f3d0" text-anchor="middle" dominant-baseline="central">أ-ب: 40 م</text></g>
+            <g id="tag_fP_B" class="diagram-tag" transform="translate(295, 145)"><rect x="-40" y="-10" width="80" height="20" rx="4" fill="rgba(15,23,42,0.9)" stroke="#10b981"/><text id="lbl_fP_B" font-size="9" fill="#a7f3d0" text-anchor="middle" dominant-baseline="central">ب-ج: 45 م</text></g>
+            <g id="tag_fP_C" class="diagram-tag" transform="translate(180, 196)"><rect x="-40" y="-10" width="80" height="20" rx="4" fill="rgba(15,23,42,0.9)" stroke="#10b981"/><text id="lbl_fP_C" font-size="9" fill="#a7f3d0" text-anchor="middle" dominant-baseline="central">ج-د: 50 م</text></g>
+            <g id="tag_fP_D" class="diagram-tag" transform="translate(65, 145)"><rect x="-40" y="-10" width="80" height="20" rx="4" fill="rgba(15,23,42,0.9)" stroke="#10b981"/><text id="lbl_fP_D" font-size="9" fill="#a7f3d0" text-anchor="middle" dominant-baseline="central">د-هـ: 42 م</text></g>
+            <g id="tag_fP_E" class="diagram-tag" transform="translate(110, 60)"><rect x="-40" y="-10" width="80" height="20" rx="4" fill="rgba(15,23,42,0.9)" stroke="#10b981"/><text id="lbl_fP_E" font-size="9" fill="#a7f3d0" text-anchor="middle" dominant-baseline="central">هـ-أ: 38 م</text></g>
+            <g id="tag_fP_D1" class="diagram-tag diag-tag-amber" transform="translate(215, 110)"><rect x="-38" y="-10" width="76" height="20" rx="4" fill="rgba(15,23,42,0.9)" stroke="#f59e0b"/><text id="lbl_fP_D1" font-size="9" fill="#fde047" text-anchor="middle" dominant-baseline="central">أ-ج: 65 م</text></g>
+            <g id="tag_fP_D2" class="diagram-tag diag-tag-amber" transform="translate(135, 110)"><rect x="-38" y="-10" width="76" height="20" rx="4" fill="rgba(15,23,42,0.9)" stroke="#f59e0b"/><text id="lbl_fP_D2" font-size="9" fill="#fde047" text-anchor="middle" dominant-baseline="central">أ-د: 60 م</text></g>
         `;
     }
+
+    // Keep corner labels bilingual (أ/ب/ج... vs A/B/C...) in every shape diagram.
+    svg.querySelectorAll('.diag-corner-text').forEach((textEl, idx) => {
+        textEl.textContent = getCornerName(idx);
+    });
 }
 
 
         function updateFixedDiagramLive() {
 
+            const isEn = (AppSettings.lang === 'en');
             let areaM2 = 0;
 
             let perimeterM = 0;
@@ -7137,9 +7867,9 @@ async function checkAppUpdates() {
 
 
 
-                if (document.getElementById('lbl_fLength')) document.getElementById('lbl_fLength').textContent = `الطول (أ-ب): ${l} م`;
+                if (document.getElementById('lbl_fRect_L')) document.getElementById('lbl_fRect_L').textContent = `الطول (أ-ب): ${l} م`;
 
-                if (document.getElementById('lbl_fWidth')) document.getElementById('lbl_fWidth').textContent = `العرض (ب-ج): ${w} م`;
+                if (document.getElementById('lbl_fRect_W')) document.getElementById('lbl_fRect_W').textContent = `العرض (ب-ج): ${w} م`;
 
 
 
@@ -7179,9 +7909,9 @@ async function checkAppUpdates() {
 
 
 
-                if (document.getElementById('lbl_RT_Base')) document.getElementById('lbl_RT_Base').textContent = `القاعدة: ${b} م`;
+                if (document.getElementById('lbl_TriRight_Base')) document.getElementById('lbl_TriRight_Base').textContent = `القاعدة: ${b} م`;
 
-                if (document.getElementById('lbl_RT_Height')) document.getElementById('lbl_RT_Height').textContent = `الارتفاع: ${h} م`;
+                if (document.getElementById('lbl_TriRight_Height')) document.getElementById('lbl_TriRight_Height').textContent = `الارتفاع: ${h} م`;
 
 
 
@@ -7297,6 +8027,13 @@ async function checkAppUpdates() {
 
                 const d2 = parseFloat(document.getElementById('fP_D2')?.value) || 0;
 
+                if (document.getElementById('lbl_fP_A')) document.getElementById('lbl_fP_A').textContent = `أ-ب: ${a} م`;
+                if (document.getElementById('lbl_fP_B')) document.getElementById('lbl_fP_B').textContent = `ب-ج: ${b} م`;
+                if (document.getElementById('lbl_fP_C')) document.getElementById('lbl_fP_C').textContent = `ج-د: ${c} م`;
+                if (document.getElementById('lbl_fP_D')) document.getElementById('lbl_fP_D').textContent = `د-هـ: ${d} م`;
+                if (document.getElementById('lbl_fP_E')) document.getElementById('lbl_fP_E').textContent = `هـ-أ: ${e} م`;
+                if (document.getElementById('lbl_fP_D1')) document.getElementById('lbl_fP_D1').textContent = `أ-ج: ${d1} م`;
+                if (document.getElementById('lbl_fP_D2')) document.getElementById('lbl_fP_D2').textContent = `أ-د: ${d2} م`;
 
 
                 perimeterM = a + b + c + d + e;
@@ -7325,6 +8062,74 @@ async function checkAppUpdates() {
 
 
 
+            // English mode: the diagram templates above are authored in Arabic,
+            // so relabel the dimension tags from the live inputs here.
+            if (isEn) {
+                const enVal = (id) => {
+                    const v = parseFloat(document.getElementById(id)?.value);
+                    return Number.isFinite(v) ? v : 0;
+                };
+                const setEnLabel = (id, text) => {
+                    const el = document.getElementById(id);
+                    if (el) el.textContent = text;
+                };
+
+                if (selectedFixedShape === 'quad_diag') {
+                    setEnLabel('lbl_fA', `Side A-B: ${enVal('fA')} m`);
+                    setEnLabel('lbl_fB', `Side B-C: ${enVal('fB')} m`);
+                    setEnLabel('lbl_fC', `Side C-D: ${enVal('fC')} m`);
+                    setEnLabel('lbl_fD', `Side D-A: ${enVal('fD')} m`);
+                    setEnLabel('lbl_fDiag', `Diagonal B-D: ${enVal('fDiag')} m`);
+                } else if (selectedFixedShape === 'quad_avg') {
+                    setEnLabel('lbl_fA', `Side A-B: ${enVal('fA')} m`);
+                    setEnLabel('lbl_fB', `Side B-C: ${enVal('fB')} m`);
+                    setEnLabel('lbl_fC', `Side C-D: ${enVal('fC')} m`);
+                    setEnLabel('lbl_fD', `Side D-A: ${enVal('fD')} m`);
+                } else if (selectedFixedShape === 'trapezoid') {
+                    setEnLabel('lbl_fBaseMinor', `Base (A-B): ${enVal('fBaseMinor')} m`);
+                    setEnLabel('lbl_fBaseMajor', `Base (D-C): ${enVal('fBaseMajor')} m`);
+                    setEnLabel('lbl_fHeight', `Height: ${enVal('fHeight')} m`);
+                } else if (selectedFixedShape === 'trapezoid_right') {
+                    setEnLabel('lbl_TR_BaseMinor', `Base (A-B): ${enVal('fTR_BaseMinor')} m`);
+                    setEnLabel('lbl_TR_BaseMajor', `Base (D-C): ${enVal('fTR_BaseMajor')} m`);
+                    setEnLabel('lbl_TR_Height', `Height: ${enVal('fTR_Height')} m`);
+                } else if (selectedFixedShape === 'rect') {
+                    setEnLabel('lbl_fRect_L', `Length (A-B): ${enVal('fLength')} m`);
+                    setEnLabel('lbl_fRect_W', `Width (B-C): ${enVal('fWidth')} m`);
+                } else if (selectedFixedShape === 'triangle') {
+                    setEnLabel('lbl_fTriA', `Side A-B: ${enVal('fTriA')} m`);
+                    setEnLabel('lbl_fTriB', `Side B-C: ${enVal('fTriB')} m`);
+                    setEnLabel('lbl_fTriC', `Side C-A: ${enVal('fTriC')} m`);
+                } else if (selectedFixedShape === 'triangle_right') {
+                    setEnLabel('lbl_TriRight_Base', `Base: ${enVal('fRT_Base')} m`);
+                    setEnLabel('lbl_TriRight_Height', `Height: ${enVal('fRT_Height')} m`);
+                } else if (selectedFixedShape === 'parallelogram') {
+                    setEnLabel('lbl_Para_Base', `Base: ${enVal('fPara_Base')} m`);
+                    setEnLabel('lbl_Para_Side', `Side: ${enVal('fPara_Side')} m`);
+                    setEnLabel('lbl_Para_Height', `Height: ${enVal('fPara_Height')} m`);
+                } else if (selectedFixedShape === 'rhombus') {
+                    setEnLabel('lbl_Rhomb_D1', `Diagonal 1: ${enVal('fRhomb_D1')} m`);
+                    setEnLabel('lbl_Rhomb_D2', `Diagonal 2: ${enVal('fRhomb_D2')} m`);
+                } else if (selectedFixedShape === 'l_shape') {
+                    setEnLabel('lbl_fL1', `Length 1: ${enVal('fL1')} m`);
+                    setEnLabel('lbl_fW1', `Width 1: ${enVal('fW1')} m`);
+                    setEnLabel('lbl_fL2', `Length 2: ${enVal('fL2')} m`);
+                    setEnLabel('lbl_fW2', `Width 2: ${enVal('fW2')} m`);
+                } else if (selectedFixedShape === 't_shape') {
+                    setEnLabel('lbl_T_TopL', `Top length: ${enVal('fT_TopL')} m`);
+                    setEnLabel('lbl_T_TopW', `Width: ${enVal('fT_TopW')} m`);
+                    setEnLabel('lbl_T_StemL', `Stem length: ${enVal('fT_StemL')} m`);
+                } else if (selectedFixedShape === 'pentagon_diag') {
+                    setEnLabel('lbl_fP_A', `A-B: ${enVal('fP_A')} m`);
+                    setEnLabel('lbl_fP_B', `B-C: ${enVal('fP_B')} m`);
+                    setEnLabel('lbl_fP_C', `C-D: ${enVal('fP_C')} m`);
+                    setEnLabel('lbl_fP_D', `D-E: ${enVal('fP_D')} m`);
+                    setEnLabel('lbl_fP_E', `E-A: ${enVal('fP_E')} m`);
+                    setEnLabel('lbl_fP_D1', `Chord A-C: ${enVal('fP_D1')} m`);
+                    setEnLabel('lbl_fP_D2', `Chord A-D: ${enVal('fP_D2')} m`);
+                }
+            }
+
             const badge = document.getElementById('diagramLiveBadge');
 
             if (badge) {
@@ -7333,11 +8138,15 @@ async function checkAppUpdates() {
 
                     const feddanVal = areaM2 / FEDDAN_M2;
 
-                    badge.textContent = AppSettings.primaryUnit === 'sqm' ? `${formatNum(Math.round(areaM2))} م²` : `${formatNum(Math.round(areaM2))} م² (${feddanVal.toFixed(2)} فدان)`;
+                    if (AppSettings.primaryUnit === 'sqm') {
+                        badge.textContent = `${formatNum(Math.round(areaM2))} ${isEn ? 'm²' : 'م²'}`;
+                    } else {
+                        badge.textContent = `${formatNum(Math.round(areaM2))} ${isEn ? 'm²' : 'م²'} (${feddanVal.toFixed(2)} ${isEn ? 'Feddan' : 'فدان'})`;
+                    }
 
                 } else {
 
-                    badge.textContent = `0 م²`;
+                    badge.textContent = `0 ${isEn ? 'm²' : 'م²'}`;
 
                 }
 
@@ -7355,6 +8164,8 @@ async function checkAppUpdates() {
 
             let perimeterM = 0;
 
+            const isEn = (AppSettings.lang === 'en');
+
 
 
             if (selectedFixedShape === 'quad_diag') {
@@ -7368,6 +8179,15 @@ async function checkAppUpdates() {
                 const d = parseFloat(document.getElementById('fD')?.value) || 0;
 
                 const diag = parseFloat(document.getElementById('fDiag')?.value) || 0;
+
+                if (a <= 0 || b <= 0 || c <= 0 || d <= 0 || diag <= 0) {
+                    showToast(isEn ? 'Please enter positive dimensions for all sides and diagonal' : 'يرجى إدخال أبعاد موجبة وصحيحة لجميع الأضلاع والوتر', 'error');
+                    return;
+                }
+                if (a + b <= diag || a + diag <= b || b + diag <= a || c + d <= diag || c + diag <= d || d + diag <= c) {
+                    showToast(isEn ? 'Invalid diagonal length: triangle inequality violated' : 'طول الوتر غير ممكن هندسياً مع الأضلاع المحددة (يجب ألا يتجاوز مجموع الضلعين)', 'error');
+                    return;
+                }
 
                 perimeterM = a + b + c + d;
 
@@ -7391,6 +8211,11 @@ async function checkAppUpdates() {
 
                 const d = parseFloat(document.getElementById('fD')?.value) || 0;
 
+                if (a <= 0 || b <= 0 || c <= 0 || d <= 0) {
+                    showToast(isEn ? 'Please enter positive dimensions for all sides' : 'يرجى إدخال أطوال موجبة لجميع أضلاع الشكل', 'error');
+                    return;
+                }
+
                 perimeterM = a + b + c + d;
 
                 areaM2 = ((a + c) / 2) * ((b + d) / 2);
@@ -7402,6 +8227,11 @@ async function checkAppUpdates() {
                 const b2 = parseFloat(document.getElementById('fBaseMinor')?.value) || 0;
 
                 const h = parseFloat(document.getElementById('fHeight')?.value) || 0;
+
+                if (b1 <= 0 || b2 <= 0 || h <= 0) {
+                    showToast(isEn ? 'Please enter positive values for bases and height' : 'يرجى إدخال قيم موجبة للقواعد والارتفاع', 'error');
+                    return;
+                }
 
                 areaM2 = ((b1 + b2) / 2) * h;
 
@@ -7415,6 +8245,11 @@ async function checkAppUpdates() {
 
                 const h = parseFloat(document.getElementById('fTR_Height')?.value) || 0;
 
+                if (bMinor <= 0 || bMajor <= 0 || h <= 0) {
+                    showToast(isEn ? 'Please enter positive values for bases and height' : 'يرجى إدخال قيم موجبة للقواعد والارتفاع', 'error');
+                    return;
+                }
+
                 areaM2 = ((bMajor + bMinor) / 2) * h;
 
                 perimeterM = bMajor + bMinor + h + Math.hypot(bMajor - bMinor, h);
@@ -7424,6 +8259,11 @@ async function checkAppUpdates() {
                 const l = parseFloat(document.getElementById('fLength')?.value) || 0;
 
                 const w = parseFloat(document.getElementById('fWidth')?.value) || 0;
+
+                if (l <= 0 || w <= 0) {
+                    showToast(isEn ? 'Please enter positive length and width' : 'يرجى إدخال قيم موجبة للطول والعرض', 'error');
+                    return;
+                }
 
                 areaM2 = l * w;
 
@@ -7437,6 +8277,15 @@ async function checkAppUpdates() {
 
                 const c = parseFloat(document.getElementById('fTriC')?.value) || 0;
 
+                if (a <= 0 || b <= 0 || c <= 0) {
+                    showToast(isEn ? 'Please enter positive dimensions for all sides' : 'يرجى إدخال أطوال موجبة لجميع الأضلاع', 'error');
+                    return;
+                }
+                if (a + b <= c || a + c <= b || b + c <= a) {
+                    showToast(isEn ? 'Impossible triangle: Sum of any 2 sides must be greater than the 3rd' : 'أبعاد غير صالحة: مجموع أي ضلعين في المثلث يجب أن يكون أكبر من الضلع الثالث', 'error');
+                    return;
+                }
+
                 perimeterM = a + b + c;
 
                 const s = perimeterM / 2;
@@ -7448,6 +8297,11 @@ async function checkAppUpdates() {
                 const b = parseFloat(document.getElementById('fRT_Base')?.value) || 0;
 
                 const h = parseFloat(document.getElementById('fRT_Height')?.value) || 0;
+
+                if (b <= 0 || h <= 0) {
+                    showToast(isEn ? 'Please enter positive base and height' : 'يرجى إدخال قيم موجبة للقاعدة والارتفاع', 'error');
+                    return;
+                }
 
                 areaM2 = 0.5 * b * h;
 
@@ -7461,6 +8315,11 @@ async function checkAppUpdates() {
 
                 const h = parseFloat(document.getElementById('fPara_Height')?.value) || 0;
 
+                if (b <= 0 || side <= 0 || h <= 0) {
+                    showToast(isEn ? 'Please enter positive values for base, side, and height' : 'يرجى إدخال قيم موجبة للقاعدة والجانب والارتفاع', 'error');
+                    return;
+                }
+
                 areaM2 = b * h;
 
                 perimeterM = 2 * (b + side);
@@ -7470,6 +8329,11 @@ async function checkAppUpdates() {
                 const d1 = parseFloat(document.getElementById('fRhomb_D1')?.value) || 0;
 
                 const d2 = parseFloat(document.getElementById('fRhomb_D2')?.value) || 0;
+
+                if (d1 <= 0 || d2 <= 0) {
+                    showToast(isEn ? 'Please enter positive diagonal lengths' : 'يرجى إدخال قيم موجبة لطولي القطرين', 'error');
+                    return;
+                }
 
                 areaM2 = 0.5 * d1 * d2;
 
@@ -7485,6 +8349,11 @@ async function checkAppUpdates() {
 
                 const w2 = parseFloat(document.getElementById('fW2')?.value) || 0;
 
+                if (l1 <= 0 || w1 <= 0 || l2 <= 0 || w2 <= 0) {
+                    showToast(isEn ? 'Please enter positive values for all dimensions' : 'يرجى إدخال قيم موجبة لجميع أبعاد شكل L', 'error');
+                    return;
+                }
+
                 areaM2 = (l1 * w1) + (l2 * w2);
 
                 perimeterM = 2 * (Math.max(l1, l2) + (w1 + w2));
@@ -7498,6 +8367,11 @@ async function checkAppUpdates() {
                 const stemL = parseFloat(document.getElementById('fT_StemL')?.value) || 0;
 
                 const stemW = parseFloat(document.getElementById('fT_StemW')?.value) || 0;
+
+                if (topL <= 0 || topW <= 0 || stemL <= 0 || stemW <= 0) {
+                    showToast(isEn ? 'Please enter positive values for all dimensions' : 'يرجى إدخال قيم موجبة لجميع أبعاد شكل T', 'error');
+                    return;
+                }
 
                 areaM2 = (topL * topW) + (stemL * stemW);
 
@@ -7518,6 +8392,17 @@ async function checkAppUpdates() {
                 const d1 = parseFloat(document.getElementById('fP_D1')?.value) || 0;
 
                 const d2 = parseFloat(document.getElementById('fP_D2')?.value) || 0;
+
+                if (a <= 0 || b <= 0 || c <= 0 || d <= 0 || e <= 0 || d1 <= 0 || d2 <= 0) {
+                    showToast(isEn ? 'Please enter positive values for all sides and diagonals' : 'يرجى إدخال قيم موجبة لجميع الأضلاع والأوتار', 'error');
+                    return;
+                }
+                if (a + b <= d1 || a + d1 <= b || b + d1 <= a ||
+                    d1 + c <= d2 || d1 + d2 <= c || c + d2 <= d1 ||
+                    d2 + d <= e || d2 + e <= d || d + e <= d2) {
+                    showToast(isEn ? 'Impossible pentagon diagonals: triangle inequality violated' : 'أطوال الأوتار غير ممكنة هندسياً مع الأضلاع المحددة', 'error');
+                    return;
+                }
 
                 perimeterM = a + b + c + d + e;
 
@@ -7593,11 +8478,11 @@ async function checkAppUpdates() {
 
         function convertFromFQS() {
 
-            const f = parseFloat(document.getElementById('convFeddan')?.value) || 0;
+            const f = Math.max(0, parseFloat(document.getElementById('convFeddan')?.value) || 0);
 
-            const q = parseFloat(document.getElementById('convQirat')?.value) || 0;
+            const q = Math.max(0, parseFloat(document.getElementById('convQirat')?.value) || 0);
 
-            const s = parseFloat(document.getElementById('convSahm')?.value) || 0;
+            const s = Math.max(0, parseFloat(document.getElementById('convSahm')?.value) || 0);
 
 
 
@@ -7631,7 +8516,7 @@ async function checkAppUpdates() {
 
         function convertFromSqm() {
 
-            const m2 = parseFloat(document.getElementById('convSqm')?.value) || 0;
+            const m2 = Math.max(0, parseFloat(document.getElementById('convSqm')?.value) || 0);
 
             const decomp = decomposeFeddan(m2);
 
@@ -7665,7 +8550,7 @@ async function checkAppUpdates() {
 
         function convertFromQasabaSq() {
 
-            const qasaba = parseFloat(document.getElementById('convQasabaSq')?.value) || 0;
+            const qasaba = Math.max(0, parseFloat(document.getElementById('convQasabaSq')?.value) || 0);
 
             const m2 = qasaba * QASABA_SQUARE;
 

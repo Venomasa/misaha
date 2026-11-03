@@ -522,8 +522,16 @@ function updateFixedDiagramLive() {
 }
 
 function calculateFixedShapeResults() {
+    return calculateFixedShapeForm();
+}
+
+function calculateFixedShapeForm() {
     const res = updateFixedDiagramLive();
+    if (!res || res.areaM2 <= 0) return;
     if (typeof displayResultsSheet === 'function') {
         displayResultsSheet(res.areaM2, res.perimeterM);
+    }
+    if (typeof openResultsBottomSheet === 'function') {
+        openResultsBottomSheet(res.areaM2, res.perimeterM);
     }
 }
